@@ -52,8 +52,17 @@ public class Utils {
     private final Activity activity;
     private List<Long> downloadIds;
     private String []tempCookies = new String[] {
-            null
-   };
+            //            valid upto 15 november 2022
+            "mid=YZgLUQALAAHXrIofzMJWKh1-wmYv; ig_did=D07E6975-09A2-49AF-8E2D-2C3751109942; ig_nrcb=1; csrftoken=hpWtiqFwRPRCnuL9wBj2rNEAbqB4wTdO",
+            "mid=YZnYEwALAAGjyDyN07FbKknN-_2Z; ig_did=01D2C3F5-8E84-42DE-A831-2BF85304DE07; ig_nrcb=1; csrftoken=B6l22B9O2n621OUqI5KYGPMN7qHhOiYY",
+            "mid=YZntHQALAAGfJuZEYPBJbMNzkm0K; ig_did=AA5FBEBD-F620-4F3A-B602-8FA0C5947AD0; ig_nrcb=1; csrftoken=mMWiKpj7Du0El2nqlGH521oNRhPw1wX9",
+            "mid=YZz8LgALAAG4OqfQMDL871LVqWYe; ig_did=2878DDDD-3C7B-4308-8756-EB0224888E04; ig_nrcb=1; csrftoken=ZUNhkPsv5J6v4Eh5fQgbm88GuoRyynT7",
+            "mid=YZz9zQALAAHHRxRktIfO8mo-9Vdc; ig_did=77F5E071-887D-432E-9504-0D82E1F283DD; ig_nrcb=1; csrftoken=fBXIrb8XrtiJGPbVp0diaEPZPIZumh27",
+            "mid=YZz-rQALAAEJ8ZqTIx_XiytKJKpK; ig_did=7DC2F398-B491-4589-B290-3B0CBF965D31; ig_nrcb=1; csrftoken=5OIIIrdeeJXmSnFE5loQ4JYPTGXQoZYi",
+            "mid=YZz_eAALAAHSqtMEG5XgeEcZNKsz; ig_did=A178DA4A-ADCA-4BED-8489-CAC4BE90D5E9; ig_nrcb=1; csrftoken=dvmtdFnUrJMfy9sQP1CJNDioDOm3LO8n",
+            "mid=YZ0A6gALAAG4gTD-hZDIpoDG_HoL; ig_did=EB2C4407-4EAB-45C1-B1CD-09AC01A8DAF0; ig_nrcb=1; csrftoken=gdcz0TusaVfpao4MdDgFWQBfaVFzc6dn"
+
+    };
 
     public Utils(Activity activity) {
         this.activity = activity;
