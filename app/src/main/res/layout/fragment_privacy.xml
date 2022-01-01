@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="instant.saver.for_instagram.PrivacyFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FF6200EE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/privacy_fragment_Back_Button"
+            android:layout_width="52dp"
+            android:layout_height="27dp"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            style="@style/actionBar_userName_style"
+            android:text="Privacy Policy"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+   <ScrollView
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:layout_marginTop="63dp"
+       android:background="@color/white"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintBottom_toBottomOf="parent">
+       <androidx.constraintlayout.widget.ConstraintLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+           <TextView
+               android:id="@+id/textview0"
+               style="@style/privacy_text_style"
+               android:text="About App"
+               android:textSize="24sp"
+               android:textStyle="bold"
+               app:layout_constraintTop_toTopOf="parent"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent" />
+
+           <TextView
+               android:id="@+id/textview1"
+               style="@style/privacy_text_style"
+               android:text="INSTANT SAVER is a free app. This page is used to inform users regarding privacy policies. Protecting your privacy is important to us. We hope the following statement will help you understand how our app deals with the personal identifiable information you may occasionally provide to us via the Internet (The Google Play Platform)."
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toBottomOf="@+id/textview0" />
+
+           <TextView
+               android:id="@+id/textview2"
+               android:text="Generally, We do not collect any personal identifiable information from you when you download our Android app. We do not require the user to get registered before downloading the application, nor do we keep track of the consumers' visits to our application, we even don't have a Server to store such personal identifiable information."
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toBottomOf="@+id/textview1"
+               style="@style/privacy_text_style" />
+
+           <TextView
+               android:id="@+id/textview3"
+               style="@style/privacy_text_style"
+               android:text="Cookies"
+               android:textSize="24sp"
+               android:textStyle="bold"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toBottomOf="@+id/textview2" />
+
+           <TextView
+               android:id="@+id/textview4"
+               android:text="Cookies ( Webview browser cookies) - Cookies are files with a small amount of data that is commonly used as an anonymous unique identifier to your mobile device that uniquely identifies your device and allows the application to help you log in faster and enhance your navigation through the Forum. You can reset your web browser to refuse all cookies or to indicate when a cookie is being sent. If you choose to refuse our cookies, you may not be able to use some portions of this Service."
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toBottomOf="@+id/textview3"
+               style="@style/privacy_text_style" />
+
+           <TextView
+               android:id="@+id/textview5"
+               style="@style/privacy_text_style"
+               android:text="Log file"
+               android:textSize="24sp"
+               android:textStyle="bold"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toBottomOf="@+id/textview4" />
+
+           <TextView
+               android:id="@+id/textview6"
+               android:text="The only situation where we may get access to your personal identifiable information is when you personally decide to email us your feedback or to provide us with a bug log report. The personal identifiable information we may get from you in that situation are strictly limited to your name, email address, device information, location Information and your survey response only."
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toBottomOf="@+id/textview5"
+               style="@style/privacy_text_style" />
+
+           <TextView
+               android:id="@+id/textview7"
+               style="@style/privacy_text_style"
+               android:text= "How we use your information"
+               android:textSize="24sp"
+               android:textStyle="bold"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toBottomOf="@+id/textview6" />
+
+           <TextView
+               android:id="@+id/textview8"
+               android:text="In the above situation, we guarantee that your personal identifiable information will only be used for contacting you and improving our services. We will never use such information (e.g. your name and email address) for any other purposes, such as to further market our products, or to disclose your personal information to a third party for commercial gains."
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toBottomOf="@+id/textview7"
+               style="@style/privacy_text_style" />
+
+           <TextView
+               android:id="@+id/textview9"
+               style="@style/privacy_text_style"
+               android:text= "Contact Us"
+               android:textSize="24sp"
+               android:textStyle="bold"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toBottomOf="@+id/textview8" />
+
+           <TextView
+               android:id="@+id/textview10"
+               android:autoLink="web|email"
+               android:text= "It should be noted that whether or not to send us your feedback or bug report is a completely voluntary initiative upon your own decision. If you have concern about your personal identifiable information being misused, or if you want further information about our privacy policy and what it means, Please feel free to email us at roshan.personified@protonmail.com . We will endeavor to provide clear answers to your questions in a timely manner."
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toBottomOf="@+id/textview9"
+               style="@style/privacy_text_style" />
+
+       </androidx.constraintlayout.widget.ConstraintLayout>
+   </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

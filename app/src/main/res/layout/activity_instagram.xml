@@ -1,0 +1,678 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="instant.saver.for_instagram.InstagramActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainScrollView_constraint_Layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ScrollView
+        android:id="@+id/main_scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/edittext_cardview"
+                android:layout_width="match_parent"
+                android:layout_height="131dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="15dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:id="@+id/edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="19dp"
+                        android:hint="Enter The Url That You Want Download"
+                        android:imeOptions="actionDone"
+                        android:inputType="textUri"
+                        android:maxEms="10"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/paste_button"
+                        android:layout_width="145dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/white"
+                        android:text="Paste Url"
+                        android:layout_marginTop="26dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:textAllCaps="false"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@id/edit_text"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/edit_text" />
+
+                    <Button
+                        android:id="@+id/download_button"
+                        android:layout_width="145dp"
+                        android:layout_height="wrap_content"
+                        android:text="Download"
+                        android:textColor="@color/white"
+                        android:textAllCaps="false"
+                        android:layout_marginTop="26dp"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:backgroundTint="@color/teal_200"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/edit_text"
+                        app:layout_constraintTop_toBottomOf="@+id/edit_text" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/Marked_Profile_Cardview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginEnd="15dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_cardview"
+                app:layout_constraintVertical_bias="0.114">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/bookmark_textview"
+                        style="@style/insta_activity_cardView_Heading"
+                        android:text="Book Marked Profiles"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/user_profiles_constraintLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/bookmark_textview"
+                        app:layout_constraintVertical_bias="1.0">
+
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/bookmark_icon3"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="60dp"
+                            app:civ_border_color="@color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/bookmark_icon2"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.271" />
+
+                        <TextView
+                            android:id="@+id/bookmark_user_name2"
+                            style="@style/UserNameTextStyle"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/bookmark_icon2"
+                            app:layout_constraintHorizontal_bias="0.529"
+                            app:layout_constraintStart_toStartOf="@+id/bookmark_icon2"
+                            app:layout_constraintTop_toBottomOf="@+id/bookmark_icon2"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/bookmark_icon1"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="60dp"
+                            app:civ_border_color="@color/white"
+                            app:civ_border_width="2dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/bookmark_icon2"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.278" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/bookmark_icon2"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="60dp"
+                            app:civ_border_color="@color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/bookmark_icon3"
+                            app:layout_constraintStart_toEndOf="@id/bookmark_icon1"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.278" />
+
+                        <TextView
+                            android:id="@+id/bookmark_user_name1"
+                            style="@style/UserNameTextStyle"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@id/bookmark_icon1"
+                            app:layout_constraintHorizontal_bias="0.47"
+                            app:layout_constraintStart_toStartOf="@+id/bookmark_icon1"
+                            app:layout_constraintTop_toBottomOf="@id/bookmark_icon1"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                        <TextView
+                            android:id="@+id/bookmark_user_name3"
+                            style="@style/UserNameTextStyle"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/bookmark_icon3"
+                            app:layout_constraintHorizontal_bias="0.529"
+                            app:layout_constraintStart_toStartOf="@+id/bookmark_icon3"
+                            app:layout_constraintTop_toBottomOf="@+id/bookmark_icon3"
+                            app:layout_constraintVertical_bias="0.006" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/bookmark_icon4"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/ic_baseline_more_vert_24"
+                            app:civ_border_color="@color/black"
+                            app:civ_border_width="2dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.733"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.83" />
+
+                        <TextView
+                            style="@style/UserNameTextStyle"
+                            android:layout_marginBottom="10dp"
+                            android:text="See All"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/bookmark_icon4"
+                            app:layout_constraintHorizontal_bias="0.75"
+                            app:layout_constraintStart_toStartOf="@+id/bookmark_icon4"
+                            app:layout_constraintTop_toBottomOf="@+id/bookmark_icon4"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/add_button"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/ic_baseline_add_24"
+                            app:civ_border_color="#03F407"
+                            app:civ_border_width="2dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.289"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.83" />
+
+                        <TextView
+                            style="@style/UserNameTextStyle"
+                            android:layout_marginBottom="10dp"
+                            android:text="Add User"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/add_button"
+                            app:layout_constraintStart_toStartOf="@+id/add_button"
+                            app:layout_constraintTop_toBottomOf="@+id/add_button"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/bookmark_adduser_constraint_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="72dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/bookmark_textview"
+                        app:layout_constraintVertical_bias="0.313">
+
+                        <EditText
+                            android:id="@+id/bookmark_editText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="150dp"
+                            android:ems="12"
+                            android:hint="Enter The User Profile URL"
+                            android:imeOptions="actionDone"
+                            android:inputType="textUri"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.491"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <Button
+                            android:id="@+id/bookMark_userAdd_button"
+                            android:layout_width="130dp"
+                            android:layout_height="wrap_content"
+                            android:text="Add User"
+                            android:textAllCaps="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="@+id/bookmark_editText"
+                            app:layout_constraintTop_toBottomOf="@+id/bookmark_editText"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                        <Button
+                            android:id="@+id/bookMark_userCancel_button"
+                            android:layout_width="130dp"
+                            android:layout_height="wrap_content"
+                            android:text="Cancel"
+                            android:textAllCaps="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/bookmark_editText"
+                            app:layout_constraintTop_toBottomOf="@+id/bookmark_editText"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/stories_Cardview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginEnd="15dp"
+                android:visibility="invisible"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Marked_Profile_Cardview">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/stories_textview"
+                        style="@style/insta_activity_cardView_Heading"
+                        android:text="Stories"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/story_icon1"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginBottom="20dp"
+                        app:civ_border_color="@color/white"
+                        app:civ_border_width="2dp"
+                        android:layout_marginTop="35dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/story_icon2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/stories_textview"
+                        app:layout_constraintVertical_bias="0.52" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/story_icon2"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="35dp"
+                        app:civ_border_color="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/story_icon3"
+                        app:layout_constraintStart_toEndOf="@+id/story_icon1"
+                        app:layout_constraintTop_toBottomOf="@+id/stories_textview"
+                        app:layout_constraintVertical_bias="0.52" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/story_icon3"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="20dp"
+                        android:src="@drawable/ic_baseline_more_vert_24"
+                        app:civ_border_color="@color/black"
+                        app:civ_border_width="2dp"
+                        android:layout_marginTop="35dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/story_icon2"
+                        app:layout_constraintTop_toBottomOf="@+id/stories_textview"
+                        app:layout_constraintVertical_bias="0.52" />
+
+                    <TextView
+                        android:id="@+id/real_name3"
+                        style="@style/UserNameTextStyle"
+                        android:layout_below="@id/story_icon3"
+                        android:layout_centerHorizontal="true"
+                        android:paddingEnd="5dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="@+id/story_icon3"
+                        app:layout_constraintStart_toStartOf="@+id/story_icon3"
+                        app:layout_constraintTop_toBottomOf="@id/story_icon3" />
+
+                    <TextView
+                        android:id="@+id/real_name1"
+                        style="@style/UserNameTextStyle"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/story_icon1"
+                        app:layout_constraintStart_toStartOf="@+id/story_icon1"
+                        app:layout_constraintTop_toBottomOf="@id/story_icon1"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <TextView
+                        android:id="@+id/real_name2"
+                        style="@style/UserNameTextStyle"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/story_icon2"
+                        app:layout_constraintStart_toStartOf="@+id/story_icon2"
+                        app:layout_constraintTop_toBottomOf="@+id/story_icon2"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/Saved_Items_Cardview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="50dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/stories_Cardview">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/savedItems_constraintLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/savedItems_textview"
+                        style="@style/insta_activity_cardView_Heading"
+                        android:text="Saved Items"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/savedItem_cardView_1"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        app:cardCornerRadius="10dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/savedItem_cardView_2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/savedItems_textview"
+                        android:layout_marginTop="58dp"
+                        android:layout_marginBottom="58dp">
+
+                        <ImageView
+                            android:id="@+id/savedItem_cardView_Imageview1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.cardview.widget.CardView>
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/savedItem_cardView_2"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:visibility="gone"
+                        app:cardCornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/savedItem_cardView_3"
+                        app:layout_constraintStart_toEndOf="@+id/savedItem_cardView_1"
+                        app:layout_constraintTop_toBottomOf="@+id/savedItems_textview"
+                        android:layout_marginTop="58dp"
+                        android:layout_marginBottom="58dp">
+
+                        <ImageView
+                            android:id="@+id/savedItem_cardView_Imageview2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/savedItem_cardView_3"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:visibility="gone"
+                        app:cardCornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/savedItem_cardView_2"
+                        app:layout_constraintTop_toBottomOf="@+id/savedItems_textview"
+                        android:layout_marginTop="58dp"
+                        android:layout_marginBottom="58dp">
+
+                        <ImageView
+                            android:id="@+id/savedItem_cardView_Imageview3"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.cardview.widget.CardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ProgressBar_Constraint_Layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#75000000"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="300dp"
+            android:layout_height="96dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="500dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.499">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ProgressBar
+                    android:layout_width="50dp"
+                    android:layout_height="60dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    style="@style/UserNameTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:padding="7dp"
+                    android:text="Fetching Data"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textStyle="normal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/LogOUT_Constraint_Layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#D0000000"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/LogOUT_text_cardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:fontFamily="@font/mandali"
+                        android:text="You Are Going To Be Logged Out From Your Signed Instagram Account. Are You Sure?"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="23sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/LogOUT_text_cardView">
+
+                    <Button
+                        android:id="@+id/loggedOption_Yes_Button"
+                        android:layout_width="142dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/white"
+                        android:text="Accept"
+                        android:textSize="18sp"
+                        android:textColor="#2EFD00"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/loggedOption_No_Button"
+                        android:layout_width="142dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/white"
+                        android:text="Decline"
+                        android:textSize="18sp"
+                        android:textColor="#FAF6021D"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+

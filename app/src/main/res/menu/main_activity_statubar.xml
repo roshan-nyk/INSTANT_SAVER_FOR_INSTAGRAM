@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/actionbar_share_option"
+        android:icon="@drawable/ic_baseline_share_24_white"
+        app:showAsAction="always"
+        android:title="TODO" />
+
+    <item
+        android:id="@+id/actionbar_feedback_icon"
+        android:icon="@drawable/ic_baseline_message_24"
+        app:showAsAction="always"
+        android:title="TODO" />
+
+    <item
+        android:id="@+id/actionbar_privacy_icon"
+        android:icon="@drawable/ic_baseline_lock_24"
+        app:showAsAction="always"
+        android:title="TODO" />
+
+    <item
+        android:id="@+id/actionbar_login_icon"
+        android:icon="@drawable/ic_baseline_person_24"
+        app:showAsAction="always"
+        android:title="TODO" />
+
+    <item
+        android:id="@+id/actionbar_instagram_icon"
+        android:icon="@drawable/ic_insta_logo"
+        app:showAsAction="always"
+        android:title="TODO" />
+
+    <item
+        android:id="@+id/actionbar_album_icon"
+        android:icon="@drawable/ic_album_white_"
+        app:showAsAction="always"
+        android:title="TODO" />
+
+    <item
+        android:id="@+id/actionbar_tutorial_icon"
+        android:icon="@drawable/ic_baseline_help_outline_24"
+        app:showAsAction="always"
+        android:title="TODO" />
+</menu>
