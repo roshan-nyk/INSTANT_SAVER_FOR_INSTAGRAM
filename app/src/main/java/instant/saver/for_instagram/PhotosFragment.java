@@ -132,8 +132,8 @@ public class PhotosFragment extends Fragment implements PhotoInterface {
         super.onViewCreated(view, savedInstanceState);
         Log.d("TAG", "onViewCreated: " + "called");
         photoFragmentLayout = view.findViewById(R.id.photoFragment_constraint_layout);
+        recyclerView = view.findViewById(R.id.Photos_RecyclerView);
         if (photosModel.getData().getUser().getPhotoTimeLineMedia().getCount() > 0) {
-            recyclerView = view.findViewById(R.id.Photos_RecyclerView);
             recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3, RecyclerView.VERTICAL, false));
             recyclerView.setHasFixedSize(true);
             recyclerView.addOnScrollListener(onScrollListener);
