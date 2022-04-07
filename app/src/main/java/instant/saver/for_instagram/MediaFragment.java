@@ -596,11 +596,21 @@ public class MediaFragment extends Fragment implements MediaInterface, View.OnCl
             downloadSingleFile();
         }
         ArrayList<String> userDetails = new ArrayList<>();
-        userDetails.add(photoModel.getNode().getOwner().getUsername());
-        userDetails.add(savedProfilePicUrl);
-        userDetails.add(photoModel.getNode().getShortcode());
-        userDetails.add(photoModel.getNode().getEdgeMediaToCaption().getEdges().get(0).getNode().getText());
-        userDetails.add("p");
+   
+        try {
+            userDetails.add(photoModel.getNode().getOwner().getUsername());
+            userDetails.add(savedProfilePicUrl);
+            userDetails.add(photoModel.getNode().getShortcode());
+            userDetails.add(photoModel.getNode().getEdgeMediaToCaption().getEdges().get(0).getNode().getText());
+            userDetails.add("p");
+        }
+        catch (Exception e){
+            userDetails.add(photoModel.getNode().getOwner().getUsername());
+            userDetails.add(savedProfilePicUrl);
+            userDetails.add(photoModel.getNode().getShortcode());
+//            userDetails.add(photoModel.getNode().getEdgeMediaToCaption().getEdges().get(0).getNode().getText());
+            userDetails.add("p");
+        }
 //        starting downloading here instead of waiting for onDestroyView because all posts are getting downloading at this point
         utils.checkAvailableExternalStorage(stringsUrlsToDownload, userDetails, albumData, isVideoList);
         totalRequiredDownloads = -5;
@@ -642,11 +652,20 @@ public class MediaFragment extends Fragment implements MediaInterface, View.OnCl
                 userDetails.add(null);
                 userDetails.add(null);
             } else if (photoModel != null) {
-                userDetails.add(photoModel.getNode().getOwner().getUsername());
-                userDetails.add(savedProfilePicUrl);
-                userDetails.add(photoModel.getNode().getShortcode());
-                userDetails.add(photoModel.getNode().getEdgeMediaToCaption().getEdges().get(0).getNode().getText());
-                userDetails.add("p");
+              try{
+                    userDetails.add(photoModel.getNode().getOwner().getUsername());
+                    userDetails.add(savedProfilePicUrl);
+                    userDetails.add(photoModel.getNode().getShortcode());
+                    userDetails.add(photoModel.getNode().getEdgeMediaToCaption().getEdges().get(0).getNode().getText());
+                    userDetails.add("p");
+                }
+                catch (Exception e){
+                    userDetails.add(photoModel.getNode().getOwner().getUsername());
+                    userDetails.add(savedProfilePicUrl);
+                    userDetails.add(photoModel.getNode().getShortcode());
+//                    userDetails.add(photoModel.getNode().getEdgeMediaToCaption().getEdges().get(0).getNode().getText());
+                    userDetails.add("p");
+                }
             }
 //            download process starting before destroying fragment
             utils.checkAvailableExternalStorage(stringsUrlsToDownload, userDetails, albumData, isVideoList);
