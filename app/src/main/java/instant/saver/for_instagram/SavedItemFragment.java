@@ -115,10 +115,18 @@ public class SavedItemFragment extends Fragment implements PhotoInterface, View.
         }
 
         @Override
-        public void onError(Throwable e) {
-            progressBarLayout.setVisibility(View.GONE);
-            Toast.makeText(requireActivity(), "Not Able To Access The Files.\nKindly Check Your Network Connection.\nAnd Try Again", Toast.LENGTH_LONG).show();
-            e.printStackTrace();
+        public void onError(Throwable throwable) {
+//            progressBarLayout.setVisibility(View.GONE);
+            Log.e("TAG", "onerror: " + throwable.getCause() + " \n       " + throwable.getMessage() + " \n     " + throwable.getLocalizedMessage());
+            if(errorUrl != null) {
+                GetDataFromServer.getInstance().callResult(instaObserver, errorUrl, utils.getTempCookies());
+                errorUrl = null;
+            }
+            else{
+                progressBarLayout.setVisibility(View.GONE);
+                Toast.makeText(requireActivity(), "Not Able To Access The Files.\nKindly Check Connection and Try Again", Toast.LENGTH_LONG).show();
+                throwable.printStackTrace();
+            }
         }
 
         @Override
@@ -127,6 +135,9 @@ public class SavedItemFragment extends Fragment implements PhotoInterface, View.
     };
     private int count_getMorePhotosMethod = 1;
     private boolean isScrollDown = false;
+    private String COOKIES = null, MODIFIED_COOKIES = null;
+    private String errorUrl;
+
     private final RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(@NonNull @NotNull RecyclerView recyclerView, int newState) {
@@ -202,6 +213,10 @@ public class SavedItemFragment extends Fragment implements PhotoInterface, View.
         }
         isAccessingData = false;
         utils = new Utils(requireActivity());
+        String[] temp = utils.getCookies().split(" ");
+        MODIFIED_COOKIES = temp[2] + " " + temp[0] + " " + temp[1] + " " + temp[3] ;
+        MODIFIED_COOKIES = MODIFIED_COOKIES.substring(0,MODIFIED_COOKIES.length()-1);
+        COOKIES = utils.getCookies();
     }
 
     @Override
@@ -254,10 +269,16 @@ public class SavedItemFragment extends Fragment implements PhotoInterface, View.
     public void photosFullViewClick(Edge itemModel) {
         progressBarLayout.setVisibility(View.VISIBLE);
         Log.d("TAG", "photosFullViewClick: "+itemModel.getNode().getProduct_type());
-        if ("GraphVideo".equals(itemModel.getNode().get__typename()) && "igtv".equals(itemModel.getNode().getProduct_type()))
-            GetDataFromServer.getInstance().callResult(instaObserver, "https://www.instagram.com/tv/" + itemModel.getNode().getShortcode() + "?__a=1", utils.getCookies());
-        else
-            GetDataFromServer.getInstance().callResult(instaObserver, "https://www.instagram.com/p/" + itemModel.getNode().getShortcode() + "?__a=1", utils.getCookies());
+        if ("GraphVideo".equals(itemModel.getNode().get__typename()) && "igtv".equals(itemModel.getNode().getProduct_type())) {
+//            GetDataFromServer.getInstance().callResult(instaObserver, "https://www.instagram.com/tv/" + itemModel.getNode().getShortcode() + "?__a=1", COOKIES);
+            errorUrl = "https://www.instagram.com/tv/" + itemModel.getNode().getShortcode() + "?__a=1" ;
+            GetDataFromServer.getInstance().callResult(instaObserver, "https://www.instagram.com/tv/" + itemModel.getNode().getShortcode() + "?__a=1", MODIFIED_COOKIES);
+
+        }else {
+//            GetDataFromServer.getInstance().callResult(instaObserver, "https://www.instagram.com/p/" + itemModel.getNode().getShortcode() + "?__a=1", COOKIES);
+            errorUrl = "https://www.instagram.com/p/" + itemModel.getNode().getShortcode() + "?__a=1" ;
+            GetDataFromServer.getInstance().callResult(instaObserver, "https://www.instagram.com/p/" + itemModel.getNode().getShortcode() + "?__a=1", MODIFIED_COOKIES);
+        }
     }
 
     @Override

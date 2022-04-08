@@ -89,7 +89,7 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
     private boolean isPermissionGrantedToAccessStorage = true;
     private LogInFragment logInFragment;
     private Intent intent;
-    private String intentAction, intentType, COOKIES = null, clipBoardUrl = null, storyIdToDownload;
+    private String intentAction, intentType, COOKIES = null, clipBoardUrl = null, storyIdToDownload, MODIFIED_COOKIES = null;
     private String storyHighlightToDownloadPKId;
     private List<Edge> storyHighlightEdgeList = null;
     private int countStoryHighlightEdgeList = 0;
@@ -635,7 +635,7 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
         intentType = intent.getType();
 
 
-        Log.d("TAG", "onCreate: "+COOKIES);
+//        Log.d("TAG", "onCreate: "+COOKIES);
 
         if (!utils.isUserInstructionActivityShown()) {
             startActivity(new Intent(this, UserInstructionActivity.class));
@@ -643,11 +643,16 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
         }
 
         if (utils.getCookies() != null) {
+            String[] temp = utils.getCookies().split(" ");
+            MODIFIED_COOKIES = temp[2] + " " + temp[0] + " " + temp[1] + " " + temp[3] ;
+            MODIFIED_COOKIES = MODIFIED_COOKIES.substring(0,MODIFIED_COOKIES.length()-1);
+//            System.out.println("--------------------------------------------------\n" + MODIFIED_COOKIES + "\n--------------------------------------------------------------------------------");
             COOKIES = utils.getCookies();
             if(utils.isNetworkAvailable())
                 GetDataFromServer.getInstance().getStories(storyObserver, COOKIES);
         } else {
-            COOKIES = utils.getTempCookies();
+//            COOKIES = utils.getTempCookies();
+            MODIFIED_COOKIES = utils.getTempCookies();
             binding.storiesCardview.setVisibility(View.INVISIBLE);
             binding.SavedItemsCardview.setVisibility(View.INVISIBLE);
         }
@@ -712,7 +717,9 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
         getSupportActionBar().setBackgroundDrawable(colorDrawable);*/
 
         if(utils.getCookies() == null)
-            COOKIES = utils.getTempCookies();
+//            COOKIES = utils.getTempCookies();
+              MODIFIED_COOKIES = utils.getTempCookies();
+
 
 
         /*  GradientDrawable gradientDrawable = new GradientDrawable(
@@ -996,13 +1003,16 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
                             if (UrlWithoutQP.length() >= 30 && "/stories/".equals(UrlWithoutQP.substring(21, 30))) {
                                 int index = UrlWithoutQP.lastIndexOf('/');
                                 storyIdToDownload = UrlWithoutQP.substring(index + 1);
-                                GetDataFromServer.getInstance().getStoryUserIdForDownload(userInfoForSingleStoryDownload, UrlWithoutQP + "?__a=1", COOKIES);
-                            } else
+//                                GetDataFromServer.getInstance().getStoryUserIdForDownload(userInfoForSingleStoryDownload, UrlWithoutQP + "?__a=1", COOKIES);
+                                GetDataFromServer.getInstance().getStoryUserIdForDownload(userInfoForSingleStoryDownload, UrlWithoutQP + "?__a=1", MODIFIED_COOKIES);
+                            } else 
                                 GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1", COOKIES);
                         } else if ("www.instagram.com".equals(authority)) {
                             String temp = UrlWithoutQP.substring(25, 28);
-                            if ("/p/".equals(temp) || "/tv/".equals(temp + UrlWithoutQP.charAt(28)) || "/reel/".equals(temp + UrlWithoutQP.substring(28, 31)))
-                                GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1", COOKIES);
+                            if ("/p/".equals(temp) || "/tv/".equals(temp + UrlWithoutQP.charAt(28)) || "/reel/".equals(temp + UrlWithoutQP.substring(28, 31))) {
+//                                GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1", COOKIES);
+                                GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1", MODIFIED_COOKIES);
+                            }
                             else if ("/s/".equals(temp)) {
                                 String query = new URI(Url).getQuery();
                                 query = query.substring(15, query.indexOf('&'));
@@ -1089,6 +1099,9 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
                 super.onBackPressed();
             if (getSupportFragmentManager().getBackStackEntryCount() == 0 && binding.mainScrollView.getVisibility() == View.GONE) {
                 if(utils.getCookies() != null) {
+                    String[] temp = utils.getCookies().split(" ");
+                    MODIFIED_COOKIES = temp[2] + " " + temp[0] + " " + temp[1] + " " + temp[3] ;
+                    MODIFIED_COOKIES = MODIFIED_COOKIES.substring(0,MODIFIED_COOKIES.length()-1);
                     COOKIES = utils.getCookies();
                     if(utils.isNetworkAvailable())
                         GetDataFromServer.getInstance().getStories(storyObserver, COOKIES);
