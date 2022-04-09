@@ -26,7 +26,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
@@ -35,7 +34,6 @@ import com.example.insta_saver.databinding.ActivityInstagramBinding;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
-import org.reactivestreams.Subscription;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -63,9 +61,8 @@ import instant.saver.for_instagram.model.story.ReelFeedModel;
 import instant.saver.for_instagram.model.story.StoryModel;
 import instant.saver.for_instagram.model.story.TrayModel;
 import instant.saver.for_instagram.model.story.User;
+import instant.saver.for_instagram.model.story.UserModel;
 import instant.saver.for_instagram.util.Utils;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.internal.fuseable.ConditionalSubscriber;
 import io.reactivex.observers.DisposableObserver;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
@@ -84,7 +81,8 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
     private Utils utils;
     private List<Saved_Profile> savedProfiles = null;
     private List<Album_Data> albumData;
-    private ArrayList<TrayModel> trayModels;
+    private ArrayList<TrayModel> trayModelArrayList;
+    private int[] storiesCardViewModelIndex = new int[2];
     //    required as after permission dialog disappears  onWindowFocusChanged() is called and without this variable and no permission permission dialog will not stop popping
     private boolean isPermissionGrantedToAccessStorage = true;
     private LogInFragment logInFragment;
@@ -129,42 +127,56 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
 
         @Override
         public void onNext(@NotNull StoryModel response) {
-            try {
-                trayModels = response.getTray();
-                Log.d("TAG", "onNext: storyObserver:-  "+trayModels+"\n"+trayModels.size()+"\n"+activity);
+                trayModelArrayList = response.getTray();
+                Log.d("TAG", "onNext: storyObserver size:-  "+ trayModelArrayList.size()+"\n"+activity);
                 if (activity != null) {
-                    if (trayModels.size() > 0) {
-                        binding.storiesCardview.setVisibility(View.VISIBLE);
-                        binding.storyIcon1.setVisibility(View.VISIBLE);
-                        binding.realName1.setVisibility(View.VISIBLE);
-                        Glide.with(activity).load(trayModels.get(0).getUser().getProfile_pic_url()).into(binding.storyIcon1);
-                        binding.realName1.setText(trayModels.get(0).getUser().getFull_name());
-                        if (trayModels.size() > 1) {
-                            binding.storyIcon2.setVisibility(View.VISIBLE);
-                            binding.realName2.setVisibility(View.VISIBLE);
-                            Glide.with(activity).load(trayModels.get(1).getUser().getProfile_pic_url()).into(binding.storyIcon2);
-                            binding.realName2.setText(trayModels.get(1).getUser().getFull_name());
-                        } else {
+                    try {
+                        int count = 0 ;
+                        for(int i = 0; i < trayModelArrayList.size(); i++){
+                            UserModel userModel = trayModelArrayList.get(i).getUser();
+                            if(userModel != null) {
+                                if(count ==  0){
+                                    storiesCardViewModelIndex[0] = i;
+                                    Glide.with(activity).load(userModel.getProfile_pic_url()).error(R.drawable.no_image_available1).into(binding.storyIcon1);
+                                    binding.realName1.setText(userModel.getFull_name());
+                                    binding.storiesCardview.setVisibility(View.VISIBLE);
+                                    binding.storyIcon1.setVisibility(View.VISIBLE);
+                                    binding.realName1.setVisibility(View.VISIBLE);
+                                    count++;
+                                }
+                                else if(count == 1){
+                                    storiesCardViewModelIndex[1] = i;
+                                    Glide.with(activity).load(trayModelArrayList.get(2).getUser().getProfile_pic_url()).error(R.drawable.no_image_available1).into(binding.storyIcon2);
+                                    binding.realName2.setText(trayModelArrayList.get(2).getUser().getFull_name());
+                                    binding.storyIcon2.setVisibility(View.VISIBLE);
+                                    binding.realName2.setVisibility(View.VISIBLE);
+                                    count++;
+                                }
+                                else if(count == 2){
+                                    Glide.with(activity).load(R.drawable.ic_baseline_more_vert_24).error(R.drawable.no_image_available1).into(binding.storyIcon3);
+                                    binding.realName3.setText("See All");
+                                    binding.storyIcon3.setVisibility(View.VISIBLE);
+                                    binding.realName3.setVisibility(View.VISIBLE);
+                                    count++;
+                                    break;
+                                }
+                            }
+                        }
+                        if(count == 0) binding.storiesCardview.setVisibility(View.INVISIBLE);
+                        else if(count == 1){
                             binding.storyIcon2.setVisibility(View.GONE);
                             binding.realName2.setVisibility(View.GONE);
                         }
-                        if (trayModels.size() > 2) {
-                            binding.storyIcon3.setVisibility(View.VISIBLE);
-                            binding.realName3.setVisibility(View.VISIBLE);
-                            Glide.with(activity).load(R.drawable.ic_baseline_more_vert_24).into(binding.storyIcon3);
-                            binding.realName3.setText("See All");
-                        } else {
+                        else if(count == 2){
                             binding.storyIcon3.setVisibility(View.GONE);
                             binding.realName3.setVisibility(View.GONE);
                         }
-                    } else
-                        binding.storiesCardview.setVisibility(View.INVISIBLE);
+                    } catch (Exception e) {
+                        Log.d("TAG", "onNext try/catch storyObserver:-" + e.getLocalizedMessage()+"\n"+e.getCause()+"\n"+e.getMessage());
+                    }
                     GetDataFromServer.getInstance().getPhotoFullDetailFeed(photoDetailObserver, utils.getUserId(), COOKIES, null, "2ce1d673055b99250e93b6f88f878fde");
                 }
                 dispose();
-            } catch (Exception e) {
-                Log.d("TAG", "onNext try/catch storyObserver:-" + e.getLocalizedMessage()+"\n"+e.getCause()+"\n"+e.getMessage());
-            }
         }
 
         @Override
@@ -800,18 +812,16 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
             utils.hideSoftKeyboard(v);
         } else if (v == binding.storyIcon1 || v == binding.storyIcon2) {
             Intent intent = new Intent(activity, SingleProfileActivity.class);
-            if (v == binding.storyIcon1) {
-                intent.putExtra("UserId", String.valueOf(trayModels.get(0).getUser().getPk()));
-                intent.putExtra("UserName", trayModels.get(0).getUser().getUsername());
-            } else {
-                intent.putExtra("UserId", String.valueOf(trayModels.get(1).getUser().getPk()));
-                intent.putExtra("UserName", trayModels.get(1).getUser().getUsername());
-            }
+            int index;
+            if (v == binding.storyIcon1)  index = storiesCardViewModelIndex[0];
+            else index = storiesCardViewModelIndex[1];
+            intent.putExtra("UserId", String.valueOf(trayModelArrayList.get(index).getUser().getPk()));
+            intent.putExtra("UserName", trayModelArrayList.get(index).getUser().getUsername());
             startActivity(intent);
         } else if (v == binding.storyIcon3) {
             Intent intent = new Intent(activity, AllUsersActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putSerializable("REEL_USERS", trayModels);
+            bundle.putSerializable("REEL_USERS", trayModelArrayList);
             intent.putExtras(bundle);
             startActivity(intent);
         } else if (v == binding.addButton) {
