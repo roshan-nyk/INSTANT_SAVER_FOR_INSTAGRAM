@@ -245,6 +245,7 @@ public class GetDataFromServer extends Application {
 
                     @Override
                     public void onError(Throwable e) {
+                        Log.d("addUserSaveProfile onerror:-",e.getLocalizedMessage());
                         observer.onError(e);
                     }
 

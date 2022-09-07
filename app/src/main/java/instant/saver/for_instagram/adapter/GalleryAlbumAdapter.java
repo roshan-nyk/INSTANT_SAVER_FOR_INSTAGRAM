@@ -220,7 +220,7 @@ public class GalleryAlbumAdapter extends RecyclerView.Adapter<GalleryAlbumAdapte
                                                     break;
                                                 }
                                             }
-                                            if(!isContain){
+                                            if(!isContain && getAdapterPosition() < tempAlbumData.getMedia().size()){
                                                 tempAlbumData.getMedia().set(getAdapterPosition(), utils.getDESTINATIONPATH() + "InstantPicture/" + actualFilenameInsideGallery);
                                                 albumDataViewModel.updateSingleAlbumData(tempAlbumData);
                                             }

@@ -409,7 +409,7 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
             binding.ProgressBarConstraintLayout.setVisibility(View.GONE);
             clipBoardUrl = null;
             e.printStackTrace();
-            Log.d("TAG", "instaObserver onError: " + e.toString()+"\n"+e.getCause()+"\n"+e.getLocalizedMessage());
+            Log.d("TAG", "instaObserver onError: " + e +"\n"+e.getCause()+"\n"+e.getLocalizedMessage());
             if (utils.isNetworkAvailable()) {
                 if (utils.getCookies() != null)
                     Toast.makeText(activity, "Unable To Download.\nRecheck URL And Try Again", Toast.LENGTH_LONG).show();
@@ -733,7 +733,6 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
               MODIFIED_COOKIES = utils.getTempCookies();
 
 
-
         /*  GradientDrawable gradientDrawable = new GradientDrawable(
                     GradientDrawable.Orientation.BL_TR,
                     new int[]{ Color.parseColor("#F58529"),
@@ -810,7 +809,8 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
             } else
                 callDownload(clipBoardUrl);
             utils.hideSoftKeyboard(v);
-        } else if (v == binding.storyIcon1 || v == binding.storyIcon2) {
+        }
+        else if (v == binding.storyIcon1 || v == binding.storyIcon2) {
             Intent intent = new Intent(activity, SingleProfileActivity.class);
             int index;
             if (v == binding.storyIcon1)  index = storiesCardViewModelIndex[0];
@@ -925,7 +925,8 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
         try {
             if (utils.isNetworkAvailable()) {
                 if (GetDataFromServer.getInstance() != null) {
-                    GetDataFromServer.getInstance().addUserSaveProfile(addToSaveProfile, url, COOKIES);
+//                    GetDataFromServer.getInstance().addUserSaveProfile(addToSaveProfile, url, COOKIES);
+                    GetDataFromServer.getInstance().addUserSaveProfile(addToSaveProfile, url, MODIFIED_COOKIES);
                     binding.ProgressBarConstraintLayout.setVisibility(View.VISIBLE);
                 } else {
                     callLogINFragment();
@@ -1015,8 +1016,11 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
                                 storyIdToDownload = UrlWithoutQP.substring(index + 1);
 //                                GetDataFromServer.getInstance().getStoryUserIdForDownload(userInfoForSingleStoryDownload, UrlWithoutQP + "?__a=1", COOKIES);
                                 GetDataFromServer.getInstance().getStoryUserIdForDownload(userInfoForSingleStoryDownload, UrlWithoutQP + "?__a=1", MODIFIED_COOKIES);
-                            } else 
-                                GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1", COOKIES);
+                            } else {
+//                                GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1", COOKIES);
+                                Log.d("COOKIES",MODIFIED_COOKIES);
+                                GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1", MODIFIED_COOKIES);
+                            }
                         } else if ("www.instagram.com".equals(authority)) {
                             String temp = UrlWithoutQP.substring(25, 28);
                             if ("/p/".equals(temp) || "/tv/".equals(temp + UrlWithoutQP.charAt(28)) || "/reel/".equals(temp + UrlWithoutQP.substring(28, 31))) {
