@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.insta_saver.R;
+import instant.saver.for_instagram.R;
 import instant.saver.for_instagram.interfaces.StoriesDetailsInterface;
 import instant.saver.for_instagram.model.story.ItemModel;
 

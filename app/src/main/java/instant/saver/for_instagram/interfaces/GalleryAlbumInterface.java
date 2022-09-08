@@ -1,6 +1,6 @@
 package instant.saver.for_instagram.interfaces;
 
-import instant.saver.for_instagram.MediaFragment;
+import instant.saver.for_instagram.fragments.MediaFragment;
 import instant.saver.for_instagram.model.album_gallery.Album_Data;
 
 

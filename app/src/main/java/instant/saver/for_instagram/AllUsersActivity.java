@@ -11,10 +11,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.insta_saver.R;
+import instant.saver.for_instagram.R;
+import instant.saver.for_instagram.databinding.ActivityAllUsersBinding;
 
 import instant.saver.for_instagram.adapter.UserListAdapter;
-import com.example.insta_saver.databinding.ActivityAllUsersBinding;
+
+import instant.saver.for_instagram.fragments.LogInFragment;
 import instant.saver.for_instagram.interfaces.SelectedUserInterface;
 import instant.saver.for_instagram.model.bookmark_profile.SavedProfileViewModel;
 import instant.saver.for_instagram.model.bookmark_profile.Saved_Profile;

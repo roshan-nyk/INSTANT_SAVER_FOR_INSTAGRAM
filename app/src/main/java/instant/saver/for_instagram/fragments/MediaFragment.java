@@ -1,4 +1,4 @@
-package instant.saver.for_instagram;
+package instant.saver.for_instagram.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
@@ -26,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
@@ -37,17 +36,17 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
-import com.example.insta_saver.R;
+import instant.saver.for_instagram.R;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import instant.saver.for_instagram.GalleryActivity;
+import instant.saver.for_instagram.VideoActivity;
 import instant.saver.for_instagram.adapter.MediaContentAdapter;
 import instant.saver.for_instagram.api.GetDataFromServer;
 import instant.saver.for_instagram.interfaces.MediaInterface;
@@ -194,7 +193,7 @@ public class MediaFragment extends Fragment implements MediaInterface, View.OnCl
                             String fileName = utils.getFilenameFromURL(currentVisibleMediaUrl);
                             String mediaType;
                             if (fileName.endsWith(".mp4"))
-                                mediaType = "InstantVideos /";
+                                mediaType = "InstantVideos/";
                             else mediaType = "InstantPicture/";
                             fileName = utils.getDESTINATIONPATH() + mediaType + fileName.substring(0, fileName.length() - 4);
                             for (Album_Data singleAlbum : albumData) {

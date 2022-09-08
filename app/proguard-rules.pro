@@ -11,7 +11,7 @@
 
 
 
-#-keepclassmembers class instant.saver.for_instagram.LogInFragment{
+#-keepclassmembers class instant.saver.for_instagram.fragments.LogInFragment{
 #   public *;
 #}
 

@@ -1,4 +1,4 @@
-package instant.saver.for_instagram;
+package instant.saver.for_instagram.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -14,8 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.insta_saver.R;
+import instant.saver.for_instagram.R;
 
+import instant.saver.for_instagram.Saved_Collection_Instagram_Activity;
 import instant.saver.for_instagram.adapter.SavedItemAdapter;
 import instant.saver.for_instagram.api.GetDataFromServer;
 import instant.saver.for_instagram.interfaces.PhotoInterface;
@@ -271,13 +272,13 @@ public class SavedItemFragment extends Fragment implements PhotoInterface, View.
         Log.d("TAG", "photosFullViewClick: "+itemModel.getNode().getProduct_type());
         if ("GraphVideo".equals(itemModel.getNode().get__typename()) && "igtv".equals(itemModel.getNode().getProduct_type())) {
 //            GetDataFromServer.getInstance().callResult(instaObserver, "https://www.instagram.com/tv/" + itemModel.getNode().getShortcode() + "?__a=1", COOKIES);
-            errorUrl = "https://www.instagram.com/tv/" + itemModel.getNode().getShortcode() + "?__a=1" ;
-            GetDataFromServer.getInstance().callResult(instaObserver, "https://www.instagram.com/tv/" + itemModel.getNode().getShortcode() + "?__a=1", MODIFIED_COOKIES);
+            errorUrl = "https://www.instagram.com/tv/" + itemModel.getNode().getShortcode() + "?__a=1&__d=dis" ;
+            GetDataFromServer.getInstance().callResult(instaObserver, "https://www.instagram.com/tv/" + itemModel.getNode().getShortcode() + "?__a=1&__d=dis", MODIFIED_COOKIES);
 
         }else {
 //            GetDataFromServer.getInstance().callResult(instaObserver, "https://www.instagram.com/p/" + itemModel.getNode().getShortcode() + "?__a=1", COOKIES);
-            errorUrl = "https://www.instagram.com/p/" + itemModel.getNode().getShortcode() + "?__a=1" ;
-            GetDataFromServer.getInstance().callResult(instaObserver, "https://www.instagram.com/p/" + itemModel.getNode().getShortcode() + "?__a=1", MODIFIED_COOKIES);
+            errorUrl = "https://www.instagram.com/p/" + itemModel.getNode().getShortcode() + "?__a=1&__d=dis" ;
+            GetDataFromServer.getInstance().callResult(instaObserver, "https://www.instagram.com/p/" + itemModel.getNode().getShortcode() + "?__a=1&__d=dis", MODIFIED_COOKIES);
         }
     }
 

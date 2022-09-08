@@ -5,23 +5,20 @@ import android.app.Application;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-
-import instant.saver.for_instagram.model.PhotosFeedModel;
-import instant.saver.for_instagram.model.UserInfoForSingleStoryDownload;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import instant.saver.for_instagram.model.PhotosFeedModel;
 import instant.saver.for_instagram.model.ResponseModel;
+import instant.saver.for_instagram.model.UserInfoForSingleStoryDownload;
 import instant.saver.for_instagram.model.album_gallery.Album_Data;
 import instant.saver.for_instagram.model.story.FullDetailModel;
 import instant.saver.for_instagram.model.story.StoryModel;
@@ -78,7 +75,7 @@ public class GetDataFromServer extends Application {
 
             @Override
             public void onActivityResumed(@NonNull Activity activity) {
-                activity.getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+                activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
             }
 
             @Override
@@ -108,8 +105,24 @@ public class GetDataFromServer extends Application {
     }
 
     public void getStories(DisposableObserver<StoryModel> observer, String Cookie) {
-        RestClient.getInstance().getService().getStoriesApi("https://i.instagram.com/api/v1/feed/reels_tray/", Cookie,
-                "\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0\"", "936619743392459", "*/*", "en-GB,en;q=0.5", "437806", "hmac.AR1SdmeyHiGg9_1kwYjX0SAYBpFtW_hFfLBHNAQJ5h3DJno5", "https://www.instagram.com", "1", "keep-alive", "https://www.instagram.com", "empty", "cors", "same-site", "1", "trailers")
+        RestClient.getInstance().getService().getStoriesApi(
+                        "https://i.instagram.com/api/v1/feed/reels_tray/",
+                        Cookie,
+                        "\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0\"",
+                        "936619743392459",
+                        "*/*",
+                        "en-GB,en;q=0.5",
+                        "437806",
+                        "hmac.AR1SdmeyHiGg9_1kwYjX0SAYBpFtW_hFfLBHNAQJ5h3DJno5",
+                        "https://www.instagram.com",
+                        "1",
+                        "keep-alive",
+                        "https://www.instagram.com",
+                        "empty",
+                        "cors",
+                        "same-site",
+                        "1",
+                        "trailers")
                 .subscribeOn(Schedulers.from(dataBaseWriteExecutor))
                 .observeOn(AndroidSchedulers.mainThread(), true)
                 .subscribe(new Observer<StoryModel>() {
@@ -137,7 +150,25 @@ public class GetDataFromServer extends Application {
     public void getStoriesFullDetailFeed(DisposableObserver<FullDetailModel> observer, String UserId, String Cookie) {
         RestClient.getInstance().getService()
 //                .getStoriesFullDetailInfoApi("https://i.instagram.com/api/v1/users/" + UserId + "/full_detail_info?max_id=", Cookie, "\"Mozilla/5.0 (Linux; Android 8.0.0; Pixel 2 XL Build/OPD1.170816.004) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Mobile Safari/537.36 Instagram 182.0.0.29.124\"")
-                .getStoriesFullDetailInfoApi("https://i.instagram.com/api/v1/feed/reels_media/", UserId, "936619743392459", Cookie, "\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0\"", "*/*", "en-GB,en;q=0.5", "437806", "hmac.AR1SdmeyHiGg9_1kwYjX0SAYBpFtW_hFfLBHNAQJ5h3DJno5", "https://www.instagram.com", "1", "keep-alive", "https://www.instagram.com", "empty", "cors", "same-site", "1", "trailers")
+                .getStoriesFullDetailInfoApi(
+                        "https://i.instagram.com/api/v1/feed/reels_media/",
+                        UserId,
+                        "936619743392459",
+                        Cookie,
+                        "\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0\"",
+                        "*/*",
+                        "en-GB,en;q=0.5",
+                        "437806",
+                        "hmac.AR1SdmeyHiGg9_1kwYjX0SAYBpFtW_hFfLBHNAQJ5h3DJno5",
+                        "https://www.instagram.com",
+                        "1",
+                        "keep-alive",
+                        "https://www.instagram.com",
+                        "empty",
+                        "cors",
+                        "same-site",
+                        "1",
+                        "trailers")
                 .subscribeOn(Schedulers.from(dataBaseWriteExecutor))
                 .observeOn(AndroidSchedulers.mainThread(), true)
                 .subscribe(new Observer<FullDetailModel>() {
@@ -173,8 +204,26 @@ public class GetDataFromServer extends Application {
                 variables = "{\"id\":\"" + userId + "\",\"first\":9,\"after\":\"" + end_cursor + "\"}";
         }
         RestClient.getInstance().getService()
-                .getPhotoFullDetailInfoApi("https://www.instagram.com/graphql/query/", cookies, "\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0\"",
-                        query_hash, variables, "936619743392459", "*/*", "en-GB,en;q=0.5", "437806", "hmac.AR1SdmeyHiGg9_1kwYjX0SAYBpFtW_hFfLBHNAQJ5h3DJno5", "https://www.instagram.com", "1", "keep-alive", "https://www.instagram.com", "empty", "cors", "same-site", "1", "trailers")
+                .getPhotoFullDetailInfoApi(
+                        "https://www.instagram.com/graphql/query/",
+                        cookies,
+                        "\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0\"",
+                        query_hash,
+                        variables,
+                        "936619743392459",
+                        "*/*",
+                        "en-GB,en;q=0.5",
+                        "437806",
+                        "hmac.AR1SdmeyHiGg9_1kwYjX0SAYBpFtW_hFfLBHNAQJ5h3DJno5",
+                        "https://www.instagram.com",
+                        "1",
+                        "keep-alive",
+                        "https://www.instagram.com",
+                        "empty",
+                        "cors",
+                        "same-site",
+                        "1",
+                        "trailers")
                 .subscribeOn(Schedulers.from(dataBaseWriteExecutor))
                 .observeOn(AndroidSchedulers.mainThread(), true)
                 .subscribe(new Observer<PhotosFeedModel>() {
@@ -201,9 +250,26 @@ public class GetDataFromServer extends Application {
     }
 
     public void callResult(DisposableObserver<ResponseModel> observer, String URL, String cookies) {
-        Log.d("TAG", "callResult: "+URL+"\n"+cookies);
+        Log.d("TAG", "callResult: " + URL + "\n" + cookies);
         RestClient.getInstance().getService()
-                .callResult(URL,cookies, "\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/91.0\"", "936619743392459", "*/*", "en-GB,en;q=0.5", "437806", "hmac.AR1SdmeyHiGg9_1kwYjX0SAYBpFtW_hFfLBHNAQJ5h3DJno5", "https://www.instagram.com", "1", "keep-alive", "https://www.instagram.com", "empty", "cors", "same-site", "1", "trailers")
+                .callResult(
+                        URL,
+                        cookies,
+                        "\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/91.0\"",
+                        "936619743392459",
+                        "*/*",
+                        "en-GB,en;q=0.5",
+                        "437806",
+                        "hmac.AR1SdmeyHiGg9_1kwYjX0SAYBpFtW_hFfLBHNAQJ5h3DJno5",
+                        "https://www.instagram.com",
+                        "1",
+                        "keep-alive",
+                        "https://www.instagram.com",
+                        "empty",
+                        "cors",
+                        "same-site",
+                        "1",
+                        "trailers")
                 .subscribeOn(Schedulers.from(dataBaseWriteExecutor))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ResponseModel>() {
@@ -230,7 +296,24 @@ public class GetDataFromServer extends Application {
     }
 
     public void addUserSaveProfile(DisposableObserver<ResponseModel> observer, String URL, String cookies) {
-        RestClient.getInstance().getService().callResult(URL, cookies, "\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0\"", "936619743392459", "*/*", "en-GB,en;q=0.5", "437806", "hmac.AR1SdmeyHiGg9_1kwYjX0SAYBpFtW_hFfLBHNAQJ5h3DJno5", "https://www.instagram.com", "1", "keep-alive", "https://www.instagram.com", "empty", "cors", "same-site", "1", "trailers")
+        RestClient.getInstance().getService().callResult(
+                        URL,
+                        cookies,
+                        "\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0\"",
+                        "936619743392459",
+                        "*/*",
+                        "en-GB,en;q=0.5",
+                        "437806",
+                        "hmac.AR1SdmeyHiGg9_1kwYjX0SAYBpFtW_hFfLBHNAQJ5h3DJno5",
+                        "https://www.instagram.com",
+                        "1",
+                        "keep-alive",
+                        "https://www.instagram.com",
+                        "empty",
+                        "cors",
+                        "same-site",
+                        "1",
+                        "trailers")
                 .subscribeOn(Schedulers.from(dataBaseWriteExecutor))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ResponseModel>() {
@@ -245,7 +328,7 @@ public class GetDataFromServer extends Application {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d("addUserSaveProfile onerror:-",e.getLocalizedMessage());
+                        Log.d("addUserSaveProfile onerror:-", e.getLocalizedMessage());
                         observer.onError(e);
                     }
 
@@ -257,7 +340,24 @@ public class GetDataFromServer extends Application {
     }
 
     public void getStoryUserIdForDownload(DisposableObserver<UserInfoForSingleStoryDownload> observer, String url, String cookies) {
-        RestClient.getInstance().getService().getUserIdForStoryDownload(url, cookies, "\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0\"", "936619743392459", "*/*", "en-GB,en;q=0.5", "437806", "hmac.AR1SdmeyHiGg9_1kwYjX0SAYBpFtW_hFfLBHNAQJ5h3DJno5", "https://www.instagram.com", "1", "keep-alive", "https://www.instagram.com", "empty", "cors", "same-site", "1", "trailers")
+        RestClient.getInstance().getService().getUserIdForStoryDownload(
+                        url,
+                        cookies,
+                        "\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0\"",
+                        "936619743392459",
+                        "*/*",
+                        "en-GB,en;q=0.5",
+                        "437806",
+                        "hmac.AR1SdmeyHiGg9_1kwYjX0SAYBpFtW_hFfLBHNAQJ5h3DJno5",
+                        "https://www.instagram.com",
+                        "1",
+                        "keep-alive",
+                        "https://www.instagram.com",
+                        "empty",
+                        "cors",
+                        "same-site",
+                        "1",
+                        "trailers")
                 .subscribeOn(Schedulers.from(dataBaseWriteExecutor))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<UserInfoForSingleStoryDownload>() {
@@ -283,7 +383,25 @@ public class GetDataFromServer extends Application {
     }
 
     public void getStoryToDownload(DisposableObserver<FullDetailModel> observer, String userId, String cookies) {
-        RestClient.getInstance().getService().getStoryToDownload("https://i.instagram.com/api/v1/feed/reels_media/", userId, "936619743392459", cookies, "\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0\"", "*/*", "en-GB,en;q=0.5", "437806", "hmac.AR1SdmeyHiGg9_1kwYjX0SAYBpFtW_hFfLBHNAQJ5h3DJno5", "https://www.instagram.com", "1", "keep-alive", "https://www.instagram.com", "empty", "cors", "same-site", "1", "trailers")
+        RestClient.getInstance().getService().getStoryToDownload(
+                        "https://i.instagram.com/api/v1/feed/reels_media/",
+                        userId,
+                        "936619743392459",
+                        cookies,
+                        "\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0\"",
+                        "*/*",
+                        "en-GB,en;q=0.5",
+                        "437806",
+                        "hmac.AR1SdmeyHiGg9_1kwYjX0SAYBpFtW_hFfLBHNAQJ5h3DJno5",
+                        "https://www.instagram.com",
+                        "1",
+                        "keep-alive",
+                        "https://www.instagram.com",
+                        "empty",
+                        "cors",
+                        "same-site",
+                        "1",
+                        "trailers")
                 .subscribeOn(Schedulers.from(dataBaseWriteExecutor))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<FullDetailModel>() {
@@ -309,7 +427,24 @@ public class GetDataFromServer extends Application {
     }
 
     public void checkUserNameProfilePic(DisposableObserver<ResponseModel> observer, String URL, String cookies) {
-        RestClient.getInstance().getService().callResult(URL, cookies, "\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0\"", "936619743392459", "*/*", "en-GB,en;q=0.5", "437806", "hmac.AR1SdmeyHiGg9_1kwYjX0SAYBpFtW_hFfLBHNAQJ5h3DJno5", "https://www.instagram.com", "1", "keep-alive", "https://www.instagram.com", "empty", "cors", "same-site", "1", "trailers")
+        RestClient.getInstance().getService().callResult(
+                        URL,
+                        cookies,
+                        "\"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0\"",
+                        "936619743392459",
+                        "*/*",
+                        "en-GB,en;q=0.5",
+                        "437806",
+                        "hmac.AR1SdmeyHiGg9_1kwYjX0SAYBpFtW_hFfLBHNAQJ5h3DJno5",
+                        "https://www.instagram.com",
+                        "1",
+                        "keep-alive",
+                        "https://www.instagram.com",
+                        "empty",
+                        "cors",
+                        "same-site",
+                        "1",
+                        "trailers")
                 .subscribeOn(Schedulers.from(dataBaseWriteExecutor))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ResponseModel>() {

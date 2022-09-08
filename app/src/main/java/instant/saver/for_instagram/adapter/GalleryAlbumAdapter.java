@@ -26,7 +26,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.insta_saver.R;
+import instant.saver.for_instagram.R;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import instant.saver.for_instagram.GalleryActivity;
-import instant.saver.for_instagram.MediaFragment;
+import instant.saver.for_instagram.fragments.MediaFragment;
 import instant.saver.for_instagram.interfaces.GalleryAlbumInterface;
 import instant.saver.for_instagram.model.album_gallery.AlbumDataViewModel;
 import instant.saver.for_instagram.model.album_gallery.Album_Data;
@@ -267,7 +267,7 @@ public class GalleryAlbumAdapter extends RecyclerView.Adapter<GalleryAlbumAdapte
                                                 }
                                             }
                                             if(!isContain){
-                                                tempAlbumData.getMedia().set(getAdapterPosition(), utils.getDESTINATIONPATH() + "InstantVideos /" + actualFilenameInsideGallery);
+                                                tempAlbumData.getMedia().set(getAdapterPosition(), utils.getDESTINATIONPATH() + "InstantVideos/" + actualFilenameInsideGallery);
                                                 albumDataViewModel.updateSingleAlbumData(tempAlbumData);
                                             }
                                         }

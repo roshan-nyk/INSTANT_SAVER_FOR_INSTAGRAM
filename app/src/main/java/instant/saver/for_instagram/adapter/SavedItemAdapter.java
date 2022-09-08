@@ -12,13 +12,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.insta_saver.R;
+import instant.saver.for_instagram.R;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-import instant.saver.for_instagram.SavedItemFragment;
+import instant.saver.for_instagram.fragments.SavedItemFragment;
 import instant.saver.for_instagram.interfaces.PhotoInterface;
 import instant.saver.for_instagram.model.Edge;
 import instant.saver.for_instagram.model.PhotoEdgeSavedMedia;
