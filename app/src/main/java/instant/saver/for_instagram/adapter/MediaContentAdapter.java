@@ -372,6 +372,11 @@ public class MediaContentAdapter extends RecyclerView.Adapter<MediaContentAdapte
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                             return false;
                         }
+                   //     @Override
+                   //     public boolean onException(Exception e, Object model, Target<GlideDrawable> target, boolean isFirstResource) {
+          
+                    //     return false;
+                   //     }
                     })
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
