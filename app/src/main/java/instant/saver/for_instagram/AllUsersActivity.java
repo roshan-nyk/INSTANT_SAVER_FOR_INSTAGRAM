@@ -11,9 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import instant.saver.for_instagram.R;
 import instant.saver.for_instagram.databinding.ActivityAllUsersBinding;
-
 import instant.saver.for_instagram.adapter.UserListAdapter;
 
 import instant.saver.for_instagram.fragments.LogInFragment;

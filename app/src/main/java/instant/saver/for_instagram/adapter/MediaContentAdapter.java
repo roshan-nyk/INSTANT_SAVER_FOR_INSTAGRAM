@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import instant.saver.for_instagram.GalleryActivity;
@@ -122,6 +124,7 @@ public class MediaContentAdapter extends RecyclerView.Adapter<MediaContentAdapte
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public void setIntDefFlag(@DisplayOptions int displayOp1, @DisplayOptions int displayOp2, @DisplayOptions int displayOp3, @DisplayOptions int displayOp4, @DisplayOptions int displayOp5) {
         Log.d("TAG", "setIntDefFlag: ");
         insetsController.setSystemBarsAppearance(displayOp1 & displayOp2 & displayOp4 & displayOp5, displayOp1 & displayOp2 & displayOp4 & displayOp5);
@@ -317,53 +320,58 @@ public class MediaContentAdapter extends RecyclerView.Adapter<MediaContentAdapte
                         public boolean onLoadFailed(@Nullable @org.jetbrains.annotations.Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
 //                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
 //                            String fileNameWithoutExtension = actualPath.substring(49, actualPath.length() - 4);
-                            String fileNameWithoutExtension = actualPath.substring(57, actualPath.length() - 4);
-                            if (!isVideo) {
-                                Cursor mediaCursorImage = activity.getContentResolver().query(uriPhoto, projectionPhoto, selectionPhoto, new String[]{"image/jpeg"}, MediaStore.Images.Media.DATE_MODIFIED + " desc");
-                                if (mediaCursorImage != null) {
-                                    int idIndex = mediaCursorImage.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME);
-                                    while (mediaCursorImage.moveToNext()) {
-                                        String actualFilenameInsideGallery = mediaCursorImage.getString(idIndex);
-                                        Log.d("TAG", "onLoadFailed: " + actualFilenameInsideGallery);
-                                        if (actualFilenameInsideGallery.contains(fileNameWithoutExtension)) {
-                                            boolean isContain = false;
-                                            for(Album_Data singleAlbum : GalleryActivity.getAlbumDataList()) {
-                                                if (singleAlbum.getMedia().stream().anyMatch(s -> s.contains(actualFilenameInsideGallery))) {
-                                                    isContain = true;
-                                                    break;
+                            try{
+                                String fileNameWithoutExtension = actualPath.substring(57, actualPath.length() - 4);
+                                if (!isVideo) {
+                                    Cursor mediaCursorImage = activity.getContentResolver().query(uriPhoto, projectionPhoto, selectionPhoto, new String[]{"image/jpeg"}, MediaStore.Images.Media.DATE_MODIFIED + " desc");
+                                    if (mediaCursorImage != null) {
+                                        int idIndex = mediaCursorImage.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME);
+                                        while (mediaCursorImage.moveToNext()) {
+                                            String actualFilenameInsideGallery = mediaCursorImage.getString(idIndex);
+                                            Log.d("TAG", "onLoadFailed: " + actualFilenameInsideGallery);
+                                            if (actualFilenameInsideGallery.contains(fileNameWithoutExtension)) {
+                                                boolean isContain = false;
+                                                for (Album_Data singleAlbum : GalleryActivity.getAlbumDataList()) {
+                                                    if (singleAlbum.getMedia().stream().anyMatch(s -> s.contains(actualFilenameInsideGallery))) {
+                                                        isContain = true;
+                                                        break;
+                                                    }
+                                                }
+                                                if (!isContain) {
+                                                    currentAlbumData.getMedia().set(getAdapterPosition(), utils.getDESTINATIONPATH() + "InstantPicture/" + actualFilenameInsideGallery);
+                                                    albumDataViewModel.updateSingleAlbumData(currentAlbumData);
                                                 }
                                             }
-                                            if(!isContain){
-                                                currentAlbumData.getMedia().set(getAdapterPosition(), utils.getDESTINATIONPATH() + "InstantPicture/" + actualFilenameInsideGallery);
-                                                albumDataViewModel.updateSingleAlbumData(currentAlbumData);
-                                            }
                                         }
+                                        mediaCursorImage.close();
                                     }
-                                    mediaCursorImage.close();
                                 }
-                            } else {
-                                Cursor mediaCursorVideo = activity.getContentResolver().query(uriVideo, projectionVideo, selectionVideo, new String[]{"video/mp4"}, MediaStore.Video.Media.DATE_MODIFIED + " desc");
-                                if (mediaCursorVideo != null) {
-                                    int idIndex = mediaCursorVideo.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME);
-                                    while (mediaCursorVideo.moveToNext()) {
-                                        String actualFilenameInsideGallery = mediaCursorVideo.getString(idIndex);
-                                        Log.d("TAG", "onLoadFailedVideos: " + actualFilenameInsideGallery);
-                                        if (actualFilenameInsideGallery.contains(fileNameWithoutExtension)) {
-                                            boolean isContain = false;
-                                            for(Album_Data singleAlbum : GalleryActivity.getAlbumDataList()) {
-                                                if (singleAlbum.getMedia().stream().anyMatch(s -> s.contains(actualFilenameInsideGallery))) {
-                                                    isContain = true;
-                                                    break;
+                                else {
+                                    Cursor mediaCursorVideo = activity.getContentResolver().query(uriVideo, projectionVideo, selectionVideo, new String[]{"video/mp4"}, MediaStore.Video.Media.DATE_MODIFIED + " desc");
+                                    if (mediaCursorVideo != null) {
+                                        int idIndex = mediaCursorVideo.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME);
+                                        while (mediaCursorVideo.moveToNext()) {
+                                            String actualFilenameInsideGallery = mediaCursorVideo.getString(idIndex);
+                                            Log.d("TAG", "onLoadFailedVideos: " + actualFilenameInsideGallery);
+                                            if (actualFilenameInsideGallery.contains(fileNameWithoutExtension)) {
+                                                boolean isContain = false;
+                                                for (Album_Data singleAlbum : GalleryActivity.getAlbumDataList()) {
+                                                    if (singleAlbum.getMedia().stream().anyMatch(s -> s.contains(actualFilenameInsideGallery))) {
+                                                        isContain = true;
+                                                        break;
+                                                    }
+                                                }
+                                                if (!isContain) {
+                                                    currentAlbumData.getMedia().set(getAdapterPosition(), utils.getDESTINATIONPATH() + "InstantVideos /" + actualFilenameInsideGallery);
+                                                    albumDataViewModel.updateSingleAlbumData(currentAlbumData);
                                                 }
                                             }
-                                            if(!isContain){
-                                                currentAlbumData.getMedia().set(getAdapterPosition(), utils.getDESTINATIONPATH() + "InstantVideos/" + actualFilenameInsideGallery);
-                                                albumDataViewModel.updateSingleAlbumData(currentAlbumData);
-                                            }
                                         }
+                                        mediaCursorVideo.close();
                                     }
-                                    mediaCursorVideo.close();
                                 }
+                            } catch (Exception exception){
+                                exception.printStackTrace();
                             }
                             return false;
                         }
@@ -372,11 +380,11 @@ public class MediaContentAdapter extends RecyclerView.Adapter<MediaContentAdapte
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                             return false;
                         }
-                   //     @Override
-                   //     public boolean onException(Exception e, Object model, Target<GlideDrawable> target, boolean isFirstResource) {
-          
-                    //     return false;
-                   //     }
+
+//                        @Override
+//                        public boolean onException(Exception e, Object model, Target<GlideDrawable> target, boolean isFirstResource) {
+//                         return false;
+//                        }
                     })
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)

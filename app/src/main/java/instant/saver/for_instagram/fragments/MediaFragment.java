@@ -193,7 +193,7 @@ public class MediaFragment extends Fragment implements MediaInterface, View.OnCl
                             String fileName = utils.getFilenameFromURL(currentVisibleMediaUrl);
                             String mediaType;
                             if (fileName.endsWith(".mp4"))
-                                mediaType = "InstantVideos/";
+                                mediaType = "InstantVideos /";
                             else mediaType = "InstantPicture/";
                             fileName = utils.getDESTINATIONPATH() + mediaType + fileName.substring(0, fileName.length() - 4);
                             for (Album_Data singleAlbum : albumData) {

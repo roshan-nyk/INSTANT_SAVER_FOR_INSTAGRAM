@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/ROSHAN/AndroidStudioProjects/INSTA_SAVER/app/src/main/res/layout/activity_all_users.xml" value="0.1294871794871795" />
         <entry key="..\:/Users/ROSHAN/AndroidStudioProjects/INSTA_SAVER/app/src/main/res/layout/activity_gallery.xml" value="0.11231884057971014" />
         <entry key="..\:/Users/ROSHAN/AndroidStudioProjects/INSTA_SAVER/app/src/main/res/layout/activity_instagram.xml" value="0.1" />
         <entry key="..\:/Users/ROSHAN/AndroidStudioProjects/INSTA_SAVER/app/src/main/res/layout/activity_profile_acitivity.xml" value="0.11231884057971014" />
@@ -18,7 +19,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
