@@ -734,21 +734,6 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
         if(utils.getCookies() == null)
 //            COOKIES = utils.getTempCookies();
               MODIFIED_COOKIES = utils.getTempCookies();
-//      check stories onResume dosn't need to destory or Restart application
-        if (utils.getCookies() != null) {
-            String[] temp = utils.getCookies().split(" ");
-            MODIFIED_COOKIES = temp[2] + " " + temp[0] + " " + temp[1] + " " + temp[3] ;
-            MODIFIED_COOKIES = MODIFIED_COOKIES.substring(0,MODIFIED_COOKIES.length()-1);
-//            System.out.println("--------------------------------------------------\n" + MODIFIED_COOKIES + "\n--------------------------------------------------------------------------------");
-            COOKIES = utils.getCookies();
-            if(utils.isNetworkAvailable())
-                GetDataFromServer.getInstance().getStories(storyObserver, COOKIES);
-        } else {
-//            COOKIES = utils.getTempCookies();
-            MODIFIED_COOKIES = utils.getTempCookies();
-            binding.storiesCardview.setVisibility(View.INVISIBLE);
-            binding.SavedItemsCardview.setVisibility(View.INVISIBLE);
-        }
         /*  GradientDrawable gradientDrawable = new GradientDrawable(
                     GradientDrawable.Orientation.BL_TR,
                     new int[]{ Color.parseColor("#F58529"),
