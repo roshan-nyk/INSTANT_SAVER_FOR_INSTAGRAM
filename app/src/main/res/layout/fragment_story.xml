@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/storyFragment_constraint_layout"
     android:background="@color/white"
-    tools:context="instant.saver.for_instagram.StoryFragment">
+    tools:context="instant.saver.for_instagram.fragments.StoryFragment">
 
        <androidx.recyclerview.widget.RecyclerView
            android:id="@+id/Stories_highlights_RecyclerView"

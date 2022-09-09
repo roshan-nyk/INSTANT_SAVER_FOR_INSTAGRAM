@@ -2,7 +2,6 @@ package instant.saver.for_instagram.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,20 +10,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import instant.saver.for_instagram.PhotosFragment;
+import instant.saver.for_instagram.fragments.PhotosFragment;
 
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
-import com.example.insta_saver.R;
+import instant.saver.for_instagram.R;
 
 import instant.saver.for_instagram.SingleProfileActivity;
 import instant.saver.for_instagram.interfaces.PhotoInterface;
@@ -32,7 +24,6 @@ import instant.saver.for_instagram.model.DisplayResource;
 import instant.saver.for_instagram.model.Edge;
 import instant.saver.for_instagram.model.Node;
 import instant.saver.for_instagram.model.PhotoTimeLineMedia;
-import instant.saver.for_instagram.model.album_gallery.AlbumDataViewModel;
 import instant.saver.for_instagram.model.album_gallery.Album_Data;
 import instant.saver.for_instagram.util.Utils;
 

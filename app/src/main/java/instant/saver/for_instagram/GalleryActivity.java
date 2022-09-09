@@ -33,8 +33,8 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.insta_saver.R;
-import com.example.insta_saver.databinding.ActivityGalleryBinding;
+import instant.saver.for_instagram.R;
+import instant.saver.for_instagram.databinding.ActivityGalleryBinding;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Objects;
 
 import instant.saver.for_instagram.adapter.GalleryAlbumAdapter;
+import instant.saver.for_instagram.fragments.MediaFragment;
 import instant.saver.for_instagram.interfaces.GalleryAlbumInterface;
 import instant.saver.for_instagram.model.album_gallery.AlbumDataViewModel;
 import instant.saver.for_instagram.model.album_gallery.Album_Data;

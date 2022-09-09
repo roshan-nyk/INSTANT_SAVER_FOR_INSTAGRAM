@@ -1,4 +1,4 @@
-package instant.saver.for_instagram;
+package instant.saver.for_instagram.fragments;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -22,7 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.insta_saver.R;
+import instant.saver.for_instagram.R;
 
 import instant.saver.for_instagram.util.Utils;
 

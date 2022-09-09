@@ -1,4 +1,4 @@
-package instant.saver.for_instagram;
+package instant.saver.for_instagram.fragments;
 
 import android.os.Bundle;
 
@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.insta_saver.R;
+import instant.saver.for_instagram.R;
 
 import org.jetbrains.annotations.NotNull;
 

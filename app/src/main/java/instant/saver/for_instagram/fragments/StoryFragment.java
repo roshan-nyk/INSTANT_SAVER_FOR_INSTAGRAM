@@ -1,4 +1,4 @@
-package instant.saver.for_instagram;
+package instant.saver.for_instagram.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,13 +14,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.insta_saver.R;
+import instant.saver.for_instagram.R;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import instant.saver.for_instagram.Saved_Collection_Instagram_Activity;
+import instant.saver.for_instagram.SingleProfileActivity;
 import instant.saver.for_instagram.adapter.StoriesDetailsAdapter;
 import instant.saver.for_instagram.adapter.StoryHighlightDPAdapter;
 import instant.saver.for_instagram.interfaces.StoriesDetailsInterface;

@@ -16,8 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.insta_saver.R;
-import com.example.insta_saver.databinding.ActivityProfileAcitivityBinding;
+
 import com.gu.toolargetool.TooLargeTool;
 
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +25,9 @@ import java.util.List;
 import java.util.Objects;
 
 import instant.saver.for_instagram.api.GetDataFromServer;
+import instant.saver.for_instagram.databinding.ActivityProfileAcitivityBinding;
+import instant.saver.for_instagram.fragments.PhotosFragment;
+import instant.saver.for_instagram.fragments.StoryFragment;
 import instant.saver.for_instagram.model.PhotosFeedModel;
 import instant.saver.for_instagram.model.ResponseModel;
 import instant.saver.for_instagram.model.album_gallery.AlbumDataViewModel;
@@ -158,7 +160,7 @@ public class SingleProfileActivity extends AppCompatActivity implements View.OnC
                 savedProfileViewModel.updateSingleSavedProfile(savedProfile);
             }
         } else
-            GetDataFromServer.getInstance().checkUserNameProfilePic(userNameProfilePic, "https://instagram.com/" + userName + "?__a=1", utils.getCookies());
+            GetDataFromServer.getInstance().checkUserNameProfilePic(userNameProfilePic, "https://instagram.com/" + userName + "?__a=1&__d=dis", utils.getCookies());
     }
 
     private void checkForOtherModel() {

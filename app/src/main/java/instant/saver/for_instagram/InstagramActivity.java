@@ -29,8 +29,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
-import com.example.insta_saver.R;
-import com.example.insta_saver.databinding.ActivityInstagramBinding;
+
 import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
@@ -44,6 +43,10 @@ import java.util.Map;
 import java.util.Objects;
 
 import instant.saver.for_instagram.api.GetDataFromServer;
+import instant.saver.for_instagram.databinding.ActivityInstagramBinding;
+import instant.saver.for_instagram.fragments.FeedbackFragment;
+import instant.saver.for_instagram.fragments.LogInFragment;
+import instant.saver.for_instagram.fragments.PrivacyFragment;
 import instant.saver.for_instagram.model.Edge;
 import instant.saver.for_instagram.model.EdgeSidecarToChildren;
 import instant.saver.for_instagram.model.Node;
@@ -731,8 +734,6 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
         if(utils.getCookies() == null)
 //            COOKIES = utils.getTempCookies();
               MODIFIED_COOKIES = utils.getTempCookies();
-
-
         /*  GradientDrawable gradientDrawable = new GradientDrawable(
                     GradientDrawable.Orientation.BL_TR,
                     new int[]{ Color.parseColor("#F58529"),
@@ -958,7 +959,7 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
                     return null;
             }
             return new URI(uri.getScheme(), uri.getAuthority(), uri.getPath(), null, // Ignore the query part of the input url
-                    uri.getFragment()).toString() + "?__a=1";
+                    uri.getFragment()).toString() + "?__a=1&__d=dis";
         }
         return "invalid";
     }
@@ -1015,17 +1016,17 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
                                 int index = UrlWithoutQP.lastIndexOf('/');
                                 storyIdToDownload = UrlWithoutQP.substring(index + 1);
 //                                GetDataFromServer.getInstance().getStoryUserIdForDownload(userInfoForSingleStoryDownload, UrlWithoutQP + "?__a=1", COOKIES);
-                                GetDataFromServer.getInstance().getStoryUserIdForDownload(userInfoForSingleStoryDownload, UrlWithoutQP + "?__a=1", MODIFIED_COOKIES);
+                                GetDataFromServer.getInstance().getStoryUserIdForDownload(userInfoForSingleStoryDownload, UrlWithoutQP + "?__a=1&__d=dis", MODIFIED_COOKIES);
                             } else {
 //                                GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1", COOKIES);
                                 Log.d("COOKIES",MODIFIED_COOKIES);
-                                GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1", MODIFIED_COOKIES);
+                                GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1&__d=dis", MODIFIED_COOKIES);
                             }
                         } else if ("www.instagram.com".equals(authority)) {
                             String temp = UrlWithoutQP.substring(25, 28);
                             if ("/p/".equals(temp) || "/tv/".equals(temp + UrlWithoutQP.charAt(28)) || "/reel/".equals(temp + UrlWithoutQP.substring(28, 31))) {
 //                                GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1", COOKIES);
-                                GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1", MODIFIED_COOKIES);
+                                GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1&__d=dis", MODIFIED_COOKIES);
                             }
                             else if ("/s/".equals(temp)) {
                                 String query = new URI(Url).getQuery();
@@ -1035,7 +1036,7 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
                                 storyHighlightToDownloadPKId = query.substring(0, indexOfUnderScore);
                                 GetDataFromServer.getInstance().getPhotoFullDetailFeed(storyHighlightObserver, storyHighlightToDownloadUserId, COOKIES, null, "d4d88dc1500312af6f937f7b804c68c3");
                             }
-                            else  GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1", COOKIES);
+                            else  GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1&__d=dis", COOKIES);
                         }
                         binding.ProgressBarConstraintLayout.setVisibility(View.VISIBLE);
                     }

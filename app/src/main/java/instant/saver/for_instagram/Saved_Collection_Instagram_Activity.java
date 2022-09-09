@@ -12,14 +12,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.insta_saver.R;
-import com.example.insta_saver.databinding.ActivitySavedCollectionInstagramBinding;
+import instant.saver.for_instagram.R;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
 import instant.saver.for_instagram.api.GetDataFromServer;
+import instant.saver.for_instagram.databinding.ActivitySavedCollectionInstagramBinding;
+import instant.saver.for_instagram.fragments.SavedItemFragment;
 import instant.saver.for_instagram.model.PhotosFeedModel;
 import instant.saver.for_instagram.model.story.FullDetailModel;
 import instant.saver.for_instagram.model.story.ReelFeedModel;

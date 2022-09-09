@@ -1,4 +1,4 @@
-package instant.saver.for_instagram;
+package instant.saver.for_instagram.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.insta_saver.R;
+import instant.saver.for_instagram.R;
 
 import instant.saver.for_instagram.api.GetDataFromServer;
 import instant.saver.for_instagram.util.Utils;

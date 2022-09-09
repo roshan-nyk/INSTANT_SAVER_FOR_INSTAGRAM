@@ -31,7 +31,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.insta_saver.R;
+import instant.saver.for_instagram.R;
 import com.jsibbold.zoomage.ZoomageView;
 
 import org.jetbrains.annotations.NotNull;
@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import instant.saver.for_instagram.GalleryActivity;
-import instant.saver.for_instagram.MediaFragment;
+import instant.saver.for_instagram.fragments.MediaFragment;
 import instant.saver.for_instagram.interfaces.MediaInterface;
 import instant.saver.for_instagram.model.Node;
 import instant.saver.for_instagram.model.album_gallery.AlbumDataViewModel;
@@ -357,7 +357,7 @@ public class MediaContentAdapter extends RecyclerView.Adapter<MediaContentAdapte
                                                 }
                                             }
                                             if(!isContain){
-                                                currentAlbumData.getMedia().set(getAdapterPosition(), utils.getDESTINATIONPATH() + "InstantVideos /" + actualFilenameInsideGallery);
+                                                currentAlbumData.getMedia().set(getAdapterPosition(), utils.getDESTINATIONPATH() + "InstantVideos/" + actualFilenameInsideGallery);
                                                 albumDataViewModel.updateSingleAlbumData(currentAlbumData);
                                             }
                                         }
@@ -372,6 +372,11 @@ public class MediaContentAdapter extends RecyclerView.Adapter<MediaContentAdapte
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                             return false;
                         }
+                   //     @Override
+                   //     public boolean onException(Exception e, Object model, Target<GlideDrawable> target, boolean isFirstResource) {
+          
+                    //     return false;
+                   //     }
                     })
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)

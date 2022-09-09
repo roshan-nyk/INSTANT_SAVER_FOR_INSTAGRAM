@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="instant.saver.for_instagram.SavedItemFragment">
+    tools:context="instant.saver.for_instagram.fragments.SavedItemFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/saved_collection_RecyclerView"
