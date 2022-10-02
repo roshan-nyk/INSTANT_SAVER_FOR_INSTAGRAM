@@ -9,6 +9,12 @@ public class ResponseModel implements Serializable {
     @SerializedName("graphql")
     private Graphql graphql;
 
+    @SerializedName("data")
+    private UserData data;
+
+    public UserData getUserData() {return data;}
+
+
     public Graphql getGraphql() {
         return graphql;
     }

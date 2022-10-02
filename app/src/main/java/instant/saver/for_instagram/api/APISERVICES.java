@@ -31,7 +31,12 @@ public interface APISERVICES {
             @Header("Sec-Fetch-Mode") String mode,
             @Header("Sec-Fetch-Site") String site,
             @Header("Sec-GPC") String gpc,
-            @Header("TE") String te);
+            @Header("TE") String te
+           /* ,
+            @Header("Host") String host,
+//            @Header("X-Instagram-AJAX") String ajax,
+            @Header("X-CSRFToken") String csrfToken*/
+    );
 
     @GET
     Observable<StoryModel> getStoriesApi(
@@ -51,15 +56,20 @@ public interface APISERVICES {
             @Header("Sec-Fetch-Mode") String mode,
             @Header("Sec-Fetch-Site") String site,
             @Header("Sec-GPC") String gpc,
-            @Header("TE") String te);
+            @Header("TE") String te
+            /*,
+            @Header("Host") String host,
+//            @Header("X-Instagram-AJAX") String ajax,
+            @Header("X-CSRFToken") String csrfToken*/
+    );
 
     @GET
     Observable<FullDetailModel> getStoriesFullDetailInfoApi(
             @Url String Value,
             @Query("reel_ids") String userId,
-            @Header("X-IG-App-ID") String apId,
             @Header("Cookie") String cookie,
             @Header("User-Agent") String userAgent,
+            @Header("X-IG-App-ID") String apId,
             @Header("Accept") String accept,
             @Header("Accept-Language") String acceptLanguage,
             @Header("X-ASBD-ID") String XASBDID,
@@ -72,15 +82,20 @@ public interface APISERVICES {
             @Header("Sec-Fetch-Mode") String mode,
             @Header("Sec-Fetch-Site") String site,
             @Header("Sec-GPC") String gpc,
-            @Header("TE") String te);
+            @Header("TE") String te
+            /*,
+            @Header("Host") String host,
+//            @Header("X-Instagram-AJAX") String ajax,
+            @Header("X-CSRFToken") String csrfToken*/
+    );
 
     @GET
     Observable<PhotosFeedModel> getPhotoFullDetailInfoApi(
             @Url String Value,
             @Header("Cookie") String cookie,
-            @Header("User-Agent") String userAgent,
             @Query("query_hash") String query_hash,
             @Query("variables") String Variables,
+            @Header("User-Agent") String userAgent,
             @Header("X-IG-App-ID") String apId,
             @Header("Accept") String accept,
             @Header("Accept-Language") String acceptLanguage,
@@ -94,7 +109,12 @@ public interface APISERVICES {
             @Header("Sec-Fetch-Mode") String mode,
             @Header("Sec-Fetch-Site") String site,
             @Header("Sec-GPC") String gpc,
-            @Header("TE") String te);
+            @Header("TE") String te
+            /*,
+            @Header("Host") String host,
+//            @Header("X-Instagram-AJAX") String ajax,
+            @Header("X-CSRFToken") String csrfToken*/
+    );
 
     @GET
     Observable<UserInfoForSingleStoryDownload> getUserIdForStoryDownload(
@@ -114,15 +134,20 @@ public interface APISERVICES {
             @Header("Sec-Fetch-Mode") String mode,
             @Header("Sec-Fetch-Site") String site,
             @Header("Sec-GPC") String gpc,
-            @Header("TE") String te);
+            @Header("TE") String te
+            /*,
+            @Header("Host") String host,
+//            @Header("X-Instagram-AJAX") String ajax,
+            @Header("X-CSRFToken") String csrfToken*/
+    );
 
     @GET
     Observable<FullDetailModel> getStoryToDownload(
             @Url String Value,
             @Query("reel_ids") String userId,
-            @Header("X-IG-App-ID") String apId,
             @Header("Cookie") String cookie,
             @Header("User-Agent") String userAgent,
+            @Header("X-IG-App-ID") String apId,
             @Header("Accept") String accept,
             @Header("Accept-Language") String acceptLanguage,
             @Header("X-ASBD-ID") String XASBDID,
@@ -135,5 +160,10 @@ public interface APISERVICES {
             @Header("Sec-Fetch-Mode") String mode,
             @Header("Sec-Fetch-Site") String site,
             @Header("Sec-GPC") String gpc,
-            @Header("TE") String te);
+            @Header("TE") String te
+            /*,
+            @Header("Host") String host,
+//            @Header("X-Instagram-AJAX") String ajax,
+            @Header("X-CSRFToken") String csrfToken*/
+    );
 }

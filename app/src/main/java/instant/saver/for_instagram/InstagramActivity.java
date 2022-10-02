@@ -1,5 +1,8 @@
 package instant.saver.for_instagram;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
@@ -29,7 +32,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
-
 import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
@@ -67,9 +69,6 @@ import instant.saver.for_instagram.model.story.User;
 import instant.saver.for_instagram.model.story.UserModel;
 import instant.saver.for_instagram.util.Utils;
 import io.reactivex.observers.DisposableObserver;
-
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class InstagramActivity extends AppCompatActivity implements View.OnClickListener, TextView.OnEditorActionListener {
 
@@ -177,7 +176,7 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
                     } catch (Exception e) {
                         Log.d("TAG", "onNext try/catch storyObserver:-" + e.getLocalizedMessage()+"\n"+e.getCause()+"\n"+e.getMessage());
                     }
-                    GetDataFromServer.getInstance().getPhotoFullDetailFeed(photoDetailObserver, utils.getUserId(), COOKIES, null, "2ce1d673055b99250e93b6f88f878fde");
+                    GetDataFromServer.getInstance().getPhotoFullDetailFeed(savedPostsInInstagramObserver, utils.getUserId(), COOKIES, null, "2ce1d673055b99250e93b6f88f878fde");
                 }
                 dispose();
         }
@@ -198,9 +197,15 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
         public void onNext(@NotNull ResponseModel response) {
             try {
                 if (utils.isNetworkAvailable()) {
-                    String userId = response.getGraphql().getUser().getId();
-                    String userName = response.getGraphql().getUser().getUsername();
-                    String profilePicUrl = response.getGraphql().getUser().getProfile_pic_url();
+
+//                   TODO JSON DATA HAS BEEN CHANGED
+//                    User user = response.getGraphql().getUser();
+//                    TODO Currently Used
+                    User user = response.getUserData().getUser();
+                    String userId = user.getId();
+                    String userName = user.getUsername();
+                    String profilePicUrl = user.getProfile_pic_url();
+
                     Saved_Profile savedProfile = new Saved_Profile(userId, userName, profilePicUrl);
                     savedProfileViewModel.insert(savedProfile);
                     binding.bookmarkEditText.setText("");
@@ -323,7 +328,7 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
                 ArrayList<String> userDetails = new ArrayList<>();
                 ArrayList<Boolean> isVideo = new ArrayList<>();
                 ArrayList<String> stringsUrlsToDownload = new ArrayList<>();
-                if (response.getGraphql().getShortcode_media() != null) {
+                if (response.getGraphql() != null && response.getGraphql().getShortcode_media() != null) {
                     ShortcodeMedia shortcodeMedia = response.getGraphql().getShortcode_media();
                     String mediaCaption = null, productType;
                     if (shortcodeMedia.getEdgeMediaToCaption().getEdges().size() > 0)
@@ -375,8 +380,10 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
                         binding.ProgressBarConstraintLayout.setVisibility(View.GONE);
                     }
                 }
-//                condition for userProfile url pic to download
-                else if (response.getGraphql().getUser() != null) {
+
+
+//                condition for userProfile url pic to download Previous Process
+                else if (response.getGraphql() != null && response.getGraphql().getUser() != null) {
                     User user = response.getGraphql().getUser();
                     userDetails.add(user.getUsername());
                     userDetails.add(user.getProfile_pic_url_hd());
@@ -396,13 +403,34 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
                     }
                 }
 
+
+//                condition for userProfile url pic to download Current Process
+                else if (response.getUserData() != null){
+                    User user = response.getUserData().getUser();
+                    userDetails.add(user.getUsername());
+                    userDetails.add(user.getProfile_pic_url_hd());
+                    userDetails.add(null);
+                    userDetails.add(user.getFull_name());
+                    userDetails.add(null);
+                    stringsUrlsToDownload.add(user.getProfile_pic_url_hd());
+                    isVideo.add(false);
+                    if (utils.isNetworkAvailable()) {
+                        utils.checkAvailableExternalStorage(stringsUrlsToDownload, userDetails, albumData, isVideo);
+                        binding.editText.setText("");
+                        utils.setClipBoardClip(clipBoardUrl);
+                    } else {
+                        Toast.makeText(activity, "No Network Connection.....Try Again", Toast.LENGTH_LONG).show();
+                        clipBoardUrl = null;
+                        binding.ProgressBarConstraintLayout.setVisibility(View.GONE);
+                    }
+                }
+
                 else{
-                    Log.d("TAG", "onNext else condition instaObserver:-" + response +"\n"+ response.getGraphql().getShortcode_media() + "\n"+response.getGraphql().getUser());
-                    binding.ProgressBarConstraintLayout.setVisibility(View.GONE);
+                     binding.ProgressBarConstraintLayout.setVisibility(View.GONE);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.d("TAG", "onNext try/catch instaObserver:-" + response + "\n"+ e.getLocalizedMessage()+"\n"+e.getCause()+"\n"+e.getMessage());
+                Log.d("TAG", "onNext try/catch instaObserver:-" + e.getLocalizedMessage()+"\n"+e.getCause()+"\n"+e.getMessage());
                 binding.ProgressBarConstraintLayout.setVisibility(View.GONE);
             }
         }
@@ -426,7 +454,7 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
         public void onComplete() {
         }
     };
-    private final DisposableObserver<PhotosFeedModel> photoDetailObserver = new DisposableObserver<PhotosFeedModel>() {
+    private final DisposableObserver<PhotosFeedModel> savedPostsInInstagramObserver = new DisposableObserver<PhotosFeedModel>() {
 
         @Override
         public void onNext(@NotNull PhotosFeedModel response) {
@@ -910,7 +938,7 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
                     Toast.makeText(activity, "Enter a valid URL", Toast.LENGTH_SHORT).show();
                 else {
                     clipBoardUrl = url;
-                    addUserToSaveProfile(temp);
+                    addUserToSaveProfile(" https://i.instagram.com/api/v1/users/web_profile_info/?username=" + temp.substring(22));
                 }
             } catch (URISyntaxException e) {
                 e.printStackTrace();
@@ -959,7 +987,7 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
                     return null;
             }
             return new URI(uri.getScheme(), uri.getAuthority(), uri.getPath(), null, // Ignore the query part of the input url
-                    uri.getFragment()).toString() + "?__a=1&__d=dis";
+                    uri.getFragment()).toString() ;//+ "?__a=1&__d=dis";
         }
         return "invalid";
     }
@@ -996,7 +1024,7 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
                         uri.getFragment()).toString();
             else return "";
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            Log.e("Exception: ","URI Exception");
             return "";
         }
     }
@@ -1011,21 +1039,24 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
                 if (utils.isNetworkAvailable()) {
                     if (GetDataFromServer.getInstance() != null && UrlWithoutQP.length() > 24) {
                         String authority = new URI(Url).getRawAuthority();
+                        System.out.println(authority + "\n" + UrlWithoutQP);
                         if ("instagram.com".equals(authority)) {
                             if (UrlWithoutQP.length() >= 30 && "/stories/".equals(UrlWithoutQP.substring(21, 30))) {
                                 int index = UrlWithoutQP.lastIndexOf('/');
                                 storyIdToDownload = UrlWithoutQP.substring(index + 1);
-//                                GetDataFromServer.getInstance().getStoryUserIdForDownload(userInfoForSingleStoryDownload, UrlWithoutQP + "?__a=1", COOKIES);
+//                                GetDataFromServer.getInstance().getStoryUserIdForDownload(userInfoForSingleStoryDownload, UrlWithoutQP + "?__a=1&__d=dis", COOKIES);
                                 GetDataFromServer.getInstance().getStoryUserIdForDownload(userInfoForSingleStoryDownload, UrlWithoutQP + "?__a=1&__d=dis", MODIFIED_COOKIES);
                             } else {
-//                                GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1", COOKIES);
-                                Log.d("COOKIES",MODIFIED_COOKIES);
-                                GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1&__d=dis", MODIFIED_COOKIES);
+                                GetDataFromServer.getInstance().callResult(instaObserver,
+                                        " https://i.instagram.com/api/v1/users/web_profile_info/?username=" + UrlWithoutQP.substring(22), COOKIES);
+//                                GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1&__d=dis", COOKIES);
+//                                GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1&__d=dis", MODIFIED_COOKIES);
                             }
-                        } else if ("www.instagram.com".equals(authority)) {
+                        }
+                        else if ("www.instagram.com".equals(authority)) {
                             String temp = UrlWithoutQP.substring(25, 28);
                             if ("/p/".equals(temp) || "/tv/".equals(temp + UrlWithoutQP.charAt(28)) || "/reel/".equals(temp + UrlWithoutQP.substring(28, 31))) {
-//                                GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1", COOKIES);
+//                                GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1&__d=dis", COOKIES);
                                 GetDataFromServer.getInstance().callResult(instaObserver, UrlWithoutQP + "?__a=1&__d=dis", MODIFIED_COOKIES);
                             }
                             else if ("/s/".equals(temp)) {
@@ -1040,7 +1071,8 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
                         }
                         binding.ProgressBarConstraintLayout.setVisibility(View.VISIBLE);
                     }
-                } else
+                }
+                else
                     Toast.makeText(this, "NO Internet Connection.", Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1139,7 +1171,7 @@ public class InstagramActivity extends AppCompatActivity implements View.OnClick
 //        was causing memoryLeak if not unregistered
         unregisterReceiver(onDownloadComplete);
         storyObserver.dispose();
-        photoDetailObserver.dispose();
-        Log.d("TAG", "onDestroy: " + storyObserver.isDisposed() + "   " + photoDetailObserver.isDisposed());
+        savedPostsInInstagramObserver.dispose();
+        Log.d("TAG", "onDestroy: " + storyObserver.isDisposed() + "   " + savedPostsInInstagramObserver.isDisposed());
     }
 }

@@ -1,5 +1,6 @@
 package instant.saver.for_instagram.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,12 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import instant.saver.for_instagram.R;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import instant.saver.for_instagram.R;
 import instant.saver.for_instagram.fragments.SavedItemFragment;
 import instant.saver.for_instagram.interfaces.PhotoInterface;
 import instant.saver.for_instagram.model.Edge;
@@ -79,7 +80,7 @@ public class SavedItemAdapter extends RecyclerView.Adapter<SavedItemAdapter.Save
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull SavedItemAdapter.SavedItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull @NotNull SavedItemAdapter.SavedItemViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Log.d("TAG", "onBindViewHolder: posts" + position);
         if(photoData != null) {
             if (position < photoData.size()) {

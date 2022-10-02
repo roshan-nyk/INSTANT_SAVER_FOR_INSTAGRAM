@@ -22,13 +22,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import instant.saver.for_instagram.R;
-
-import instant.saver.for_instagram.util.Utils;
-
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+import instant.saver.for_instagram.R;
+import instant.saver.for_instagram.util.Utils;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class LogInFragment extends Fragment implements View.OnClickListener {
 
@@ -36,6 +44,7 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
     private WebView webView;
     private CircleImageView cancelButton;
     private String current_Activity;
+    OkHttpClient okHttpClient;
 
     public LogInFragment() {
         // Required empty public constructor
@@ -55,6 +64,9 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
         utils = new Utils(requireActivity());
         if (getArguments() != null)
             current_Activity = getArguments().getString("Current_Activity", null);
+        okHttpClient = new OkHttpClient().newBuilder()
+                .readTimeout(5, TimeUnit.SECONDS)
+                .build();
     }
 
     @Override
@@ -133,6 +145,7 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
     private class MyWebViewClient extends WebViewClient {
         @Override
         public void onPageFinished(WebView webView, String str) {
+            Log.w("TAG", "Entered onPageFinished() For URL:- " + str);
             super.onPageFinished(webView, str);
             String cookies = CookieManager.getInstance().getCookie(str);
 
@@ -145,10 +158,12 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
                 utils.setUserId(cookies);
                 utils.setClipBoardClip(null);
                 onClick(cancelButton);
-            } else
+            }
+            else
                 try {
                     Toast.makeText(requireActivity(), "You Need to LogIn to your Instagram Account.", Toast.LENGTH_SHORT).show();
-                } catch (IllegalStateException e) {
+                }
+                catch (IllegalStateException e) {
                     Log.d("TAG", "onPageFinished: " + e);
                 }
         }
@@ -160,12 +175,56 @@ public class LogInFragment extends Fragment implements View.OnClickListener {
 
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
-            return super.shouldInterceptRequest(webView, webResourceRequest);
+            Log.w("", "");
+            Map<String,String> temp = webResourceRequest.getRequestHeaders();
+            if (temp.size()>0) {
+                Map<String, String> responseHeaders = new HashMap<>(temp);
+                Stream<String> words  = Arrays.stream(responseHeaders.values().toArray()).flatMap((val) -> Stream.of("\n" + val ));
+                String values = Arrays.toString(responseHeaders.values().toArray());
+               /* Log.w("TAG", "\n\n====================================REQUEST START=============================================\n\n" +
+                        "Request: " + webResourceRequest.getMethod() + "  ====>  "
+                        + webResourceRequest.getUrl() + "\n"
+                        + "Request Headers KEYS: " + responseHeaders.keySet() + "\n"
+                        + "Request Headers VALUES: " + words.collect(Collectors.toList())
+                        + "\n\n==========================================REQUEST END=========================\n\n"
+                );*/
+            }
+
+//            Log.w("TAG", "Entered shouldInterceptRequest()");
+            WebResourceResponse returnResponse  = super.shouldInterceptRequest(webView, webResourceRequest);
+            Request okRequest = new Request.Builder()
+                    .url(webResourceRequest.getUrl().toString())
+//                        .post(null)
+                    .build();
+            try {
+                Response okResponse = okHttpClient.newCall(okRequest).execute();
+                int statusCode = okResponse.code();
+                String encoding = "UTF-8";
+                String mimeType = "application/json";
+                String reasonPhrase = "OK";
+                Map<String,String> responseHeaders = new HashMap<String,String>();
+               /* Log.w("", "");
+                Log.w("TAG", "\n\n===================================RESPONSE START==============================================\n\n" +
+                        "okResponse status code:" + statusCode + "\n"
+                        + "okResponse headers For Request: "
+                        +  webResourceRequest.getUrl().toString() + "\n"
+                        + okResponse.headers() + "\n\n==============================================RESPONSE END=============================\n\n"
+                );*/
+                okResponse.close();
+//                    InputStream data = new ByteArrayInputStream(okResponse.body().string().getBytes(StandardCharsets.UTF_8));
+//                    returnResponse = new WebResourceResponse(mimeType,encoding,statusCode,reasonPhrase,responseHeaders,data);
+//                    Log.w("TAG", "okResponse InputStream:" + returnResponse);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return returnResponse;
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest webResourceRequest) {
-            return super.shouldOverrideUrlLoading(webView, webResourceRequest);
+            return false;
+//            return super.shouldOverrideUrlLoading(webView, webResourceRequest);
         }
     }
 }

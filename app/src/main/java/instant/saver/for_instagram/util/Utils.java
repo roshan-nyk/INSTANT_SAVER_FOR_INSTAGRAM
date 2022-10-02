@@ -1,5 +1,9 @@
 package instant.saver.for_instagram.util;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
+
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
@@ -8,7 +12,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.MediaScannerConnection;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -39,10 +44,6 @@ import java.util.concurrent.atomic.AtomicLong;
 import instant.saver.for_instagram.InstagramActivity;
 import instant.saver.for_instagram.api.GetDataFromServer;
 import instant.saver.for_instagram.model.album_gallery.Album_Data;
-
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class Utils {
 
@@ -102,11 +103,15 @@ public class Utils {
         preferences.edit().putBoolean("USER_INSTRUCTION_SHOWN", userInstructionActivityShown).apply();
     }
 
-    //    deprecated
     public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        Network network = connectivityManager.getActiveNetwork();
+        if (network == null) return false;
+        NetworkCapabilities activeNetwork = connectivityManager.getNetworkCapabilities(network);
+        return activeNetwork != null
+                && ((activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                || activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+                || activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)));
     }
 
 

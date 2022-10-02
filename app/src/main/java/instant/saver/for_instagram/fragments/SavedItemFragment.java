@@ -14,8 +14,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import instant.saver.for_instagram.R;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
+import instant.saver.for_instagram.R;
 import instant.saver.for_instagram.Saved_Collection_Instagram_Activity;
 import instant.saver.for_instagram.adapter.SavedItemAdapter;
 import instant.saver.for_instagram.api.GetDataFromServer;
@@ -27,11 +30,11 @@ import instant.saver.for_instagram.model.PhotoOwner;
 import instant.saver.for_instagram.model.PhotosFeedModel;
 import instant.saver.for_instagram.model.ResponseModel;
 import instant.saver.for_instagram.model.ShortcodeMedia;
+import instant.saver.for_instagram.model.story.ItemModel;
 import instant.saver.for_instagram.model.story.ReelFeedModel;
+import instant.saver.for_instagram.model.story.StoryModel;
+import instant.saver.for_instagram.model.story.TrayModel;
 import instant.saver.for_instagram.util.Utils;
-
-import org.jetbrains.annotations.NotNull;
-
 import io.reactivex.observers.DisposableObserver;
 
 public class SavedItemFragment extends Fragment implements PhotoInterface, View.OnClickListener {
@@ -41,6 +44,12 @@ public class SavedItemFragment extends Fragment implements PhotoInterface, View.
     private String userId, queryHash;
     private Utils utils;
     private SavedItemAdapter savedItemAdapter;
+    private View progressBarLayout;
+   private int count_getMorePhotosMethod = 1;
+    private boolean isScrollDown = false;
+    private String COOKIES = null, MODIFIED_COOKIES = null;
+    private String errorUrl;
+
     private final DisposableObserver<PhotosFeedModel> photoDetailObserver = new DisposableObserver<PhotosFeedModel>() {
         @Override
         public void onNext(@NotNull PhotosFeedModel response) {
@@ -60,7 +69,6 @@ public class SavedItemFragment extends Fragment implements PhotoInterface, View.
         public void onComplete() {
         }
     };
-    private View progressBarLayout;
     private final DisposableObserver<ResponseModel> instaObserver = new DisposableObserver<ResponseModel>() {
         @Override
         public void onNext(@NotNull ResponseModel versionList) {
@@ -134,11 +142,48 @@ public class SavedItemFragment extends Fragment implements PhotoInterface, View.
         public void onComplete() {
         }
     };
-    private int count_getMorePhotosMethod = 1;
-    private boolean isScrollDown = false;
-    private String COOKIES = null, MODIFIED_COOKIES = null;
-    private String errorUrl;
+    private final DisposableObserver<StoryModel> savedItemObserver = new DisposableObserver<StoryModel>() {
+        @Override
+        public void onNext(@NotNull StoryModel storyModel) {
+            try {
+                Saved_Collection_Instagram_Activity.setIsMediaFragmentOpened(true);
+                progressBarLayout.setVisibility(View.GONE);
+                ArrayList<TrayModel> modelList = storyModel.getTray();
+                if (!modelList.isEmpty()) {
+                    TrayModel trayModel = modelList.get(0);
+                    if (!trayModel.getItems().isEmpty()) {
+                        ItemModel firstItem = trayModel.getItems().get(0);
+                        MediaFragment demoFragment = MediaFragment.newInstance(trayModel.getItems(), 0,firstItem.getUser().getUsername(), firstItem.getUser().getProfile_pic_url());
+                        requireActivity().getSupportFragmentManager().beginTransaction()
+                                .add(R.id.saved_collection_Constraint_layout, demoFragment)
+                                .addToBackStack(null)
+                                .commit();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
+        @Override
+        public void onError(Throwable throwable) {
+//            progressBarLayout.setVisibility(View.GONE);
+            Log.e("TAG", "onerror: " + throwable.getCause() + " \n       " + throwable.getMessage() + " \n     " + throwable.getLocalizedMessage());
+            if(errorUrl != null) {
+                GetDataFromServer.getInstance().callResult(instaObserver, errorUrl, utils.getTempCookies());
+                errorUrl = null;
+            }
+            else{
+                progressBarLayout.setVisibility(View.GONE);
+                Toast.makeText(requireActivity(), "Not Able To Access The Files.\nKindly Check Connection and Try Again", Toast.LENGTH_LONG).show();
+                throwable.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onComplete() {
+        }
+    };
     private final RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(@NonNull @NotNull RecyclerView recyclerView, int newState) {
@@ -254,7 +299,8 @@ public class SavedItemFragment extends Fragment implements PhotoInterface, View.
                 isAccessingData = false;*/
             recyclerView.setAdapter(savedItemAdapter);
             savedItemAdapter.notifyDataSetChanged();
-        } else {
+        }
+        else {
             recyclerView.setVisibility(View.GONE);
             textView.setVisibility(View.VISIBLE);
             textView.setText("Sorry... No Posts Available Right Now To Show.");
@@ -269,17 +315,24 @@ public class SavedItemFragment extends Fragment implements PhotoInterface, View.
     @Override
     public void photosFullViewClick(Edge itemModel) {
         progressBarLayout.setVisibility(View.VISIBLE);
-        Log.d("TAG", "photosFullViewClick: "+itemModel.getNode().getProduct_type());
-        if ("GraphVideo".equals(itemModel.getNode().get__typename()) && "igtv".equals(itemModel.getNode().getProduct_type())) {
-//            GetDataFromServer.getInstance().callResult(instaObserver, "https://www.instagram.com/tv/" + itemModel.getNode().getShortcode() + "?__a=1", COOKIES);
-            errorUrl = "https://www.instagram.com/tv/" + itemModel.getNode().getShortcode() + "?__a=1&__d=dis" ;
-            GetDataFromServer.getInstance().callResult(instaObserver, "https://www.instagram.com/tv/" + itemModel.getNode().getShortcode() + "?__a=1&__d=dis", MODIFIED_COOKIES);
-
-        }else {
-//            GetDataFromServer.getInstance().callResult(instaObserver, "https://www.instagram.com/p/" + itemModel.getNode().getShortcode() + "?__a=1", COOKIES);
-            errorUrl = "https://www.instagram.com/p/" + itemModel.getNode().getShortcode() + "?__a=1&__d=dis" ;
-            GetDataFromServer.getInstance().callResult(instaObserver, "https://www.instagram.com/p/" + itemModel.getNode().getShortcode() + "?__a=1&__d=dis", MODIFIED_COOKIES);
+        Node node = itemModel.getNode();
+       /* if ("GraphVideo".equals(node.get__typename()) && "igtv".equals(node.getProduct_type())) {
+           errorUrl = "https://www.instagram.com/tv/" + node.getShortcode() + "?__a=1&__d=dis" ;
+            GetDataFromServer.getInstance().callResult(instaObserver, "https://www.instagram.com/tv/" + node.getShortcode() + "?__a=1&__d=dis", COOKIES);
+//            GetDataFromServer.getInstance().callResult(instaObserver, "https://www.instagram.com/tv/" + node.getShortcode() + "?__a=1&__d=dis", MODIFIED_COOKIES);
         }
+        else {
+            errorUrl = "https://www.instagram.com/p/" + node.getShortcode() + "?__a=1&__d=dis" ;
+            GetDataFromServer.getInstance().callResult(instaObserver, "https://www.instagram.com/p/" + node.getShortcode() + "?__a=1&__d=dis", COOKIES);
+//            GetDataFromServer.getInstance().callResult(instaObserver, "https://www.instagram.com/p/" + node.getShortcode() + "?__a=1&__d=dis", MODIFIED_COOKIES);
+        }*/
+        Log.d("TAG", "photosFullViewClick: " + node.getProduct_type());
+        Log.d("TAG", "photosFullViewClick: " + node.get__typename());
+        Log.d("TAG", "photosFullViewClick: " + node.getProduct_type());
+        Log.d("TAG", "photosFullViewClick: " + node.getShortcode());
+        Log.d("TAG", "photosFullViewClick: " + node.getId());
+        String url =  "https://i.instagram.com/api/v1/media/" +  node.getId().split("_")[0] + "/info/";
+        GetDataFromServer.getInstance().getSavedItems(savedItemObserver, url, COOKIES);
     }
 
     @Override

@@ -1,5 +1,9 @@
 package instant.saver.for_instagram.fragments;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
+
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.ClipData;
@@ -36,7 +40,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
-import instant.saver.for_instagram.R;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -46,6 +49,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import instant.saver.for_instagram.GalleryActivity;
+import instant.saver.for_instagram.R;
 import instant.saver.for_instagram.VideoActivity;
 import instant.saver.for_instagram.adapter.MediaContentAdapter;
 import instant.saver.for_instagram.api.GetDataFromServer;
@@ -56,10 +60,6 @@ import instant.saver.for_instagram.model.album_gallery.AlbumDataViewModel;
 import instant.saver.for_instagram.model.album_gallery.Album_Data;
 import instant.saver.for_instagram.model.story.ItemModel;
 import instant.saver.for_instagram.util.Utils;
-
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class MediaFragment extends Fragment implements MediaInterface, View.OnClickListener {
 
@@ -355,9 +355,11 @@ public class MediaFragment extends Fragment implements MediaInterface, View.OnCl
 //        takes time to load so loading it here
         Glide.with(requireActivity()).load(savedProfilePicUrl).into(captionUserImage);
 
-        if (storyItemModelList != null)
-            mediaContentAdapter = new MediaContentAdapter(requireActivity(), storyItemModelList, MediaFragment.this);
-        else if (photoModel != null)
+        if (storyItemModelList != null) {
+            if(storyItemModelList.get(0).getMedia_type() == 8)
+                mediaContentAdapter = new MediaContentAdapter(requireActivity(), storyItemModelList.get(0).getCarouselMedia(), MediaFragment.this);
+            else mediaContentAdapter = new MediaContentAdapter(requireActivity(), storyItemModelList, MediaFragment.this);
+        }else if (photoModel != null)
             mediaContentAdapter = new MediaContentAdapter(requireActivity(), photoModel.getNode(), MediaFragment.this);
         else {
             deleteCardView = view.findViewById(R.id.delete_cardView);
@@ -446,7 +448,8 @@ public class MediaFragment extends Fragment implements MediaInterface, View.OnCl
                     Toast.makeText(requireActivity(), "Don't have Write access to External Storage", Toast.LENGTH_LONG).show();
             } else
                 Toast.makeText(requireActivity(), "No Network Available.", Toast.LENGTH_LONG).show();
-        } else if (v == deleteButton) {
+        }
+        else if (v == deleteButton) {
             if (utils.isExternalStorageWritable()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
                     onClick(deleteYesButton);
@@ -458,7 +461,8 @@ public class MediaFragment extends Fragment implements MediaInterface, View.OnCl
                 }
             } else
                 Toast.makeText(requireActivity(), "Don't have Write access to External Storage", Toast.LENGTH_LONG).show();
-        } else if (v == deleteYesButton) {
+        }
+        else if (v == deleteYesButton) {
             try {
                 deleteMediaFileFromDirectory(mediaStrings.get(currentViewPagerPosition));
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
@@ -469,21 +473,29 @@ public class MediaFragment extends Fragment implements MediaInterface, View.OnCl
                 e.printStackTrace();
             }
             instaLogo.setVisibility(View.VISIBLE);
-        } else if (v == deleteNoButton || v == singlePostButton || v == wholeAlbumButton || v == downloadOption) {
+        }
+        else if (v == deleteNoButton || v == singlePostButton || v == wholeAlbumButton || v == downloadOption) {
             downloadOption.setVisibility(View.GONE);
             instaLogo.setVisibility(View.VISIBLE);
-            if(v == wholeAlbumButton) downloadAllPosts();
+            if(v == wholeAlbumButton) {
+                if (storyItemModelList != null) downloadAllSavedItems();
+                else if (photoModel != null)  downloadAllPosts();
+            }
             else if(v == singlePostButton) downloadSingleFile();
             else if(v == downloadOption) isFirstTimePhotoDownloadButtonTouched = false;
-        } else if (v == cardCaptionImageView) {
+        }
+        else if (v == cardCaptionImageView) {
             Glide.with(requireActivity()).load(savedProfilePicUrl).into(captionUserImage);
             captionUserName.setText(userName);
             if (photoModel != null) {
                 List<Edge> edgeList = photoModel.getNode().getEdgeMediaToCaption().getEdges();
                 if (edgeList.size() > 0)
                     captionUserCaptionText.setText(edgeList.get(0).getNode().getText());
-            } else if (mediaStrings != null)
+            }
+            else if (mediaStrings != null)
                 captionUserCaptionText.setText(mediaCaption);
+            else if(storyItemModelList.get(0).getCaption() != null && !storyItemModelList.get(0).getCaption().getText().isEmpty())
+                captionUserCaptionText.setText(storyItemModelList.get(0).getCaption().getText());
             if (mediaStrings == null){
                 if(downloadCardView.getVisibility() == View.VISIBLE) {
                     isDownloadButtonVisibility = true;
@@ -494,7 +506,8 @@ public class MediaFragment extends Fragment implements MediaInterface, View.OnCl
             instaLogo.setVisibility(View.GONE);
             backButton.setVisibility(View.GONE);
             userCaptionLayout.setVisibility(View.VISIBLE);
-        } else if (v == cardCaptionImageViewReplica || v == copyCaptionText) {
+        }
+        else if (v == cardCaptionImageViewReplica || v == copyCaptionText) {
             instaLogo.setVisibility(View.VISIBLE);
             backButton.setVisibility(View.VISIBLE);
             userCaptionLayout.setVisibility(View.GONE);
@@ -508,7 +521,8 @@ public class MediaFragment extends Fragment implements MediaInterface, View.OnCl
                 clipboardManager.setPrimaryClip(ClipData.newPlainText(null, captionUserCaptionText.getText()));
                 Toast.makeText(requireContext(), "Caption Copied", Toast.LENGTH_SHORT).show();
             }
-        } else if (v == instaLogo) {
+        }
+        else if (v == instaLogo) {
             try {
                 Intent launchIntent = new Intent(Intent.ACTION_VIEW).setPackage("com.instagram.android");
                 if (launchIntent != null) {
@@ -534,7 +548,8 @@ public class MediaFragment extends Fragment implements MediaInterface, View.OnCl
             } catch (Exception e) {
                 startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://play.google.com/store/apps/details?id=" + "com.instagram.android")));
             }
-        } else if (v == backButton)
+        }
+        else if (v == backButton)
             requireActivity().onBackPressed();
         else if (v == shareButton || v == repostButton) {
             File file;
@@ -586,7 +601,8 @@ public class MediaFragment extends Fragment implements MediaInterface, View.OnCl
                 viewPagerPositionsToDownload.add(i);
                 downloadSingleFile();
             }
-        } else {
+        }
+        else {
             isVideo = photoModel.getNode().isIs_video();
             if (isVideo)
                 currentVisibleMediaUrl = photoModel.getNode().getVideo_url();
@@ -602,6 +618,33 @@ public class MediaFragment extends Fragment implements MediaInterface, View.OnCl
             userDetails.add(null);
         else
             userDetails.add(photoModel.getNode().getEdgeMediaToCaption().getEdges().get(0).getNode().getText());
+        userDetails.add("p");
+//        starting downloading here instead of waiting for onDestroyView because all posts are getting downloading at this point
+        utils.checkAvailableExternalStorage(stringsUrlsToDownload, userDetails, albumData, isVideoList);
+        totalRequiredDownloads = -5;
+        currentVisibleMediaUrl = temp;
+    }
+
+    private void downloadAllSavedItems() {
+        String temp = currentVisibleMediaUrl;
+        ArrayList<ItemModel> tempItemList = storyItemModelList.get(0).getCarouselMedia();
+        totalRequiredDownloads = tempItemList.size();
+        for (int i = 0; i < totalRequiredDownloads; i++) {
+            ItemModel currentModel = tempItemList.get(i);
+            if (currentModel.getMedia_type() == 2)
+                currentVisibleMediaUrl = currentModel.getVideo_versions().get(0).getUrl();
+            else
+                currentVisibleMediaUrl = currentModel.getImage_versions2().getCandidates().get(0).getUrl();
+            viewPagerPositionsToDownload.add(i);
+            downloadSingleFile();
+        }
+        ArrayList<String> userDetails = new ArrayList<>();
+        userDetails.add(userName);
+        userDetails.add(savedProfilePicUrl);
+        userDetails.add(null);
+        if(storyItemModelList.get(0).getCaption() != null && !storyItemModelList.get(0).getCaption().getText().isEmpty())
+            userDetails.add(storyItemModelList.get(0).getCaption().getText());
+        else userDetails.add(null);
         userDetails.add("p");
 //        starting downloading here instead of waiting for onDestroyView because all posts are getting downloading at this point
         utils.checkAvailableExternalStorage(stringsUrlsToDownload, userDetails, albumData, isVideoList);
@@ -641,8 +684,14 @@ public class MediaFragment extends Fragment implements MediaInterface, View.OnCl
                 userDetails.add(userName);
                 userDetails.add(savedProfilePicUrl);
                 userDetails.add(null);
-                userDetails.add(null);
-                userDetails.add(null);
+                if(storyItemModelList.get(0).getCaption() != null && !storyItemModelList.get(0).getCaption().getText().isEmpty()) {
+                    userDetails.add(storyItemModelList.get(0).getCaption().getText());
+                    userDetails.add("p");
+                }
+                else {
+                    userDetails.add(null);
+                    userDetails.add(null);
+                }
             } else if (photoModel != null) {
                 userDetails.add(photoModel.getNode().getOwner().getUsername());
                 userDetails.add(savedProfilePicUrl);
@@ -743,8 +792,10 @@ public class MediaFragment extends Fragment implements MediaInterface, View.OnCl
     }
 
     public void startDownload() {
-        if (storyItemModelList != null)
-            downloadSingleFile();
+        if (storyItemModelList != null) {
+            if(storyItemModelList.get(0).getMedia_type() == 8)  downloadPhotos();
+            else downloadSingleFile();
+        }
         else if (photoModel != null)
             downloadPhotos();
     }

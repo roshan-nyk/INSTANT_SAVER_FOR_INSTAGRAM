@@ -73,6 +73,27 @@ public class ItemModel implements Serializable {
     @SerializedName("can_reply")
     private boolean can_reply;
 
+    @SerializedName("user")
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    @SerializedName("caption")
+    private Caption caption;
+
+    public Caption getCaption() {
+        return caption;
+    }
+
+    @SerializedName("carousel_media")
+    private ArrayList<ItemModel> carousel_media;
+
+    public ArrayList<ItemModel> getCarouselMedia() {
+        return carousel_media;
+    }
+
     public long getTaken_at() {
         return taken_at;
     }
