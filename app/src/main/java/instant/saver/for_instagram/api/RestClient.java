@@ -53,6 +53,8 @@ public class RestClient {
 
     Gson gson = new GsonBuilder()
             .setLenient()
+//          .setPrettyPrinting() there will not be any whitespace in between field names and its value, object fields, and objects within arrays in the JSON output
+        	.setPrettyPrinting()
             .create();
 
     private RestClient() {
